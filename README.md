@@ -25,7 +25,8 @@ Augmented reality is turning out to be a natural interface for robotics: you can
 the robot sees, understand what it intends to do, and direct it with your hands instead of
 a gamepad or a terminal. This repo tracks projects that explore that intersection on
 [Snap Spectacles](https://www.spectacles.com/) — teleoperation, navigation, sensor
-visualization, and LLM-driven control across quadrupeds, humanoids, and desktop robots.
+visualization, LLM-driven control, and even physical games — across quadrupeds, humanoids,
+and desktop robots.
 
 Each project lives in its own top-level folder and is imported with its **full original
 commit history**, so authorship and development context are preserved. Nothing here is a
@@ -38,6 +39,7 @@ rewrite — these are the upstream projects, mirrored.
 | [Spectacles-2-Unitree](#spectacles-2-unitree) | Unitree G1 humanoid | Hand-tracked teleoperation | [TastyDucks](https://github.com/TastyDucks) |
 | [spectacles-reachy-mini](#spectacles-reachy-mini) | Reachy Mini | Puppeteering + LLM assistant | [V4C38](https://github.com/V4C38) |
 | [spectacles-dimensional-os](#spectacles-dimensional-os) | Unitree Go2 + G1 | Navigation + LiDAR visualization | [V4C38](https://github.com/V4C38) |
+| [VectAR-Airhokey](#vectar-airhokey) | Anki Vector | AR air hockey vs. a real robot | [PtPavloTkachenko](https://github.com/PtPavloTkachenko) |
 
 ---
 
@@ -110,11 +112,47 @@ time, which is the unglamorous problem that decides whether any of this feels re
 
 ---
 
+### VectAR-Airhokey
+
+📁 [`VectAR-Airhokey/`](./VectAR-Airhokey) &nbsp;•&nbsp; 🔗 Upstream: [PtPavloTkachenko/VectAR-Airhokey](https://github.com/PtPavloTkachenko/VectAR-Airhokey)
+
+**Play air hockey against a real robot.** A physical
+[Anki Vector](https://en.wikipedia.org/wiki/Anki_(company)) defends his goal on your actual
+table while you smash a virtual neon puck at him. The puck, the field, the score chip and
+the lightning are AR — the goalie is a real machine, with his own drives, saves,
+trash-talk, and sore-loser dance.
+
+```
+Spectacles lens  ── ws ──  Mac game server  ── gRPC ──  Vector robot
+(puck physics,             (goalie AI,                  (drives, saves,
+ score, AR field)           safety, voice)               talks, dances)
+```
+
+This is the most hardware-involved project in the collection, and the most complete: it
+ships a **pairing wizard** that onboards a factory-reset Vector over Bluetooth, points him
+at a bundled [wire-pod](https://github.com/kercre123/wire-pod) server, joins him to Wi-Fi,
+and authorizes your Mac. Both **stock** and **OSKR/dev** robots are verified end-to-end.
+There's also a browser console for monitoring and a mouse-playable practice field with a
+simulated goalie, so you can work on the game without the robot present.
+
+**What's inside**
+- `lens/` — the Lens Studio 5.15 project (`robo-hockey-515.esproj`)
+- `lens-523/` — the same game migrated to Lens Studio 5.23 for newer SPECS hardware
+- `server/` — Python 3.12 game server, goalie AI, and pairing wizard (web console on `:8780`)
+- `docs/` — unusually thorough: architecture, BLE protocol, pairing deep-dives, QA matrices
+
+> ⚠️ **Heads up on size:** this project ships two Vector firmware OTA images (~369 MB) via
+> Git LFS so a stock robot can be flashed over your own LAN with nothing to download by
+> hand. They are the bulk of this repo's LFS footprint. Without them the installer still
+> works by streaming from the Internet Archive — slower, and only while that stays up.
+
+---
+
 ## Getting Started
 
-**These projects use [Git LFS](https://git-lfs.com/)** for 3D assets, textures, meshes, and
-demo media. Install it *before* cloning, or the large files will arrive as text pointers
-instead of real content:
+**These projects use [Git LFS](https://git-lfs.com/)** for 3D assets, textures, meshes, demo
+media, and robot firmware. Install it *before* cloning, or the large files will arrive as
+text pointers instead of real content:
 
 ```bash
 git lfs install
@@ -125,6 +163,15 @@ Already cloned without it? Recover with:
 
 ```bash
 git lfs install && git lfs pull
+```
+
+**Only want one project?** A full clone pulls roughly **650 MB** of LFS content, most of it
+the Vector firmware images. Skip the download and fetch just the folder you need:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/agrancini-sc/specs-robots-1fficialAR.git
+cd specs-robots-1fficialAR
+git lfs pull --include="spectacles-reachy-mini/**"   # ← swap for the project you want
 ```
 
 Then open the project you want:
@@ -155,10 +202,17 @@ derived from [Unitree's `avp_teleoperate`](https://github.com/unitreerobotics/av
 `spectacles-dimensional-os` contributors. Built on
 [Dimensional OS](https://github.com/dimensionalOS/dimos).
 
+**VectAR-Airhokey** — © 2026 **Pavlo Tkachenko**
+([**@PtPavloTkachenko**](https://github.com/PtPavloTkachenko)). Robot onboarding builds on
+[wire-pod](https://github.com/kercre123/wire-pod) by
+[@kercre123](https://github.com/kercre123); the AR Vector mesh comes from Anki's
+`anki_vector` SDK (Apache 2.0). See the project's
+[`THIRD_PARTY_NOTICES.md`](./VectAR-Airhokey/THIRD_PARTY_NOTICES.md) for the full list.
+
 Robot platforms referenced here are products of
-[Unitree Robotics](https://www.unitree.com/) and
-[Pollen Robotics](https://www.pollen-robotics.com/), and are trademarks of their respective
-owners.
+[Unitree Robotics](https://www.unitree.com/),
+[Pollen Robotics](https://www.pollen-robotics.com/), and Anki / Digital Dream Labs, and are
+trademarks of their respective owners.
 
 ## Licenses
 
@@ -170,6 +224,7 @@ file with the original copyright notice intact:
 | [Spectacles-2-Unitree](./Spectacles-2-Unitree/LICENSE) | MIT |
 | [spectacles-reachy-mini](./spectacles-reachy-mini/LICENSE) | MIT |
 | [spectacles-dimensional-os](./spectacles-dimensional-os/LICENSE) | MIT |
+| [VectAR-Airhokey](./VectAR-Airhokey/LICENSE) | MIT |
 
 Third-party components retain their own licenses (Apache 2.0, BSD, LGPL v3, and others) as
 documented within each project.
