@@ -1,0 +1,77 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+# Cursor IDE local config (MCP tokens, rules cache) — use ~/.cursor/mcp.json
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
+# README / demo media at repo root (not Lens Studio Assets/)
+# Add GIFs/PNGs here when ready; optional LFS via .gitattributes
+Logs.md
+
+# Accidental Lens Studio open at repo root (always use lens-studio/spectacles-dimensional-os.esproj)
+/*.esproj
+/*.esproj.*.lock
+/Cache/
+/Packages/
+/PluginsUserPreferences/
+/Workspaces/
+/assets/*.scene
+/assets/*.scene.meta
+/assets/*.mat
+/assets/*.mat.meta
+/assets/*.deviceCameraTexture
+/assets/*.deviceCameraTexture.meta
+/assets/*.internetModule
+/assets/*.internetModule.meta
+/assets/*.renderTarget
+/assets/*.renderTarget.meta
+/assets/*.imgmarker
+/assets/*.imgmarker.meta
+/assets/Scripts/
+lens-studio/Assets/Assets/
+
+# Python — repo-wide (see github/gitignore Python template)
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+*.so
+.Python
+.env
+.envrc
+.dimos-ar-launcher/
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Lens Studio generated / local — primary rules in lens-studio/.gitignore
+# (Snap docs: Cache/, BackUp/, Support/, PluginsUserPreferences/, Workspaces/)
+lens-studio/Cache/
+lens-studio/PluginsUserPreferences/
+lens-studio/Support/
+lens-studio/BackUp/
+lens-studio/Workspaces/
+lens-studio/*.lock
+lens-studio/.vscode/
+lens-studio/jsconfig.json
+lens-studio/tsconfig.json
+
+# JS/TS test toolchain (lens-studio/Tests)
+node_modules/
+lens-studio/Tests/coverage/
+.vitest/

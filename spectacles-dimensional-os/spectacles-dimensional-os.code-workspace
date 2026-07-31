@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../dimos"
+		},
+		{
+			"path": "../spectacles-reachy-mini"
+		}
+	],
+	"settings": {}
+}
