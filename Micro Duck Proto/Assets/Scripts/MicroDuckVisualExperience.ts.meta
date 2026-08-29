@@ -30,7 +30,6 @@
     duckDistanceCm: false
     enableDuckAvatar: false
     enableHandReticle: false
-    enableSpatialGlow: false
     gestureController: false
   ScriptTypesHidden:
     {}
@@ -46,16 +45,14 @@
       enableDuckAvatar: true
       duckDistanceCm: !<float> 85.000000
       enableHandReticle: true
-      enableSpatialGlow: true
   ScriptTypes:
     -
       {}
   InputLines:
-    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck 3D Visual Experience</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Renders 3D avatar, hand steering compass, and spatial feedback</span>"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck 3D Visual Experience</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Renders 3D avatar and hand steering compass</span>"}'
     - '// @ui {"widget":"separator"}'
     - '// @input AssignableType gestureController {"hint":"Reference to the gesture controller"}'
     - '// @input AssignableType_1 bridgeClient {"hint":"Reference to the specs bridge client"}'
     - '// @input bool enableDuckAvatar = true {"hint":"Spawn 3D Duck Hologram in front of user"}'
     - '// @input float duckDistanceCm = 85 {"hint":"Distance of duck avatar in front of camera (in cm)"}'
     - '// @input bool enableHandReticle = true {"hint":"Enable 3D hand compass / steering reticle attached to palm"}'
-    - '// @input bool enableSpatialGlow = true {"hint":"Enable spatial debug lines / glow spheres"}'

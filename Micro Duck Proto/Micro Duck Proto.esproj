@@ -13,7 +13,7 @@ metaInfo:
     []
   tags:
     []
-  lensName: Specs Starter
+  lensName: Specs Micro Duck
   lensDescriptors:
     - EXPERIMENTAL_API
   lensApplicability:
@@ -22,7 +22,7 @@ metaInfo:
   lensClientCompatibilities:
     - Spectacles
   platformBundlesEnabled: false
-  iconHash: ""
+  iconHash: 85f4f739a3de1c639617da0afd88dc25
   videoPreviewHash: ""
   fromTemplateName: Spectacles
   fromTemplateUrl: Lens Studio 5.15.4.26022322

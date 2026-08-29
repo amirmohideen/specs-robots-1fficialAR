@@ -49,7 +49,7 @@
   InputLines:
     - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">🐤 Micro Duck App Bootstrap</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Auto-wires all scripts, visuals, gestures, and networking</span>"}'
     - '// @ui {"widget":"separator"}'
-    - '// @input string bridgeHost = "127.0.0.1" {"hint":"Local bridge IP for connecting to the simulation (e.g. 192.168.1.50 or 127.0.0.1)"}'
+    - '// @input string bridgeHost = "192.168.29.46" {"hint":"Local bridge IP for connecting to the simulation (e.g. 192.168.29.46 or 127.0.0.1)"}'
     - '// @input float bridgePort = 8765 {"hint":"WebSocket port (default 8765)"}'
     - '// @input bool showDuckVisuals = true {"hint":"Enable 3D holographic duck avatar"}'
     - '// @input bool showHandReticle = true {"hint":"Enable hand-attached steering compass & reticle"}'
