@@ -1,0 +1,64 @@
+- !<AssetImportMetadata/aa66c788-d703-4bdb-9462-1dabd394752f>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 34a7353d-8bd1-475c-9052-dbb5a0bcbb7c
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 34a7353d-8bd1-475c-9052-dbb5a0bcbb7c
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d6370a99-8e89-4c94-9b84-6b428c66560a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d6370a99-8e89-4c94-9b84-6b428c66560a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 87106031-7677-4656-9a32-9d064b9bc7e2
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    autoConnect: false
+    bridgeHost: false
+    bridgePort: false
+    enableLogging: false
+    reconnectDelaySeconds: false
+    streamRateHz: false
+    useSecureWebSocket: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - bridgeHost: 127.0.0.1
+      bridgePort: !<float> 8765.000000
+      useSecureWebSocket: false
+      autoConnect: true
+      enableLogging: true
+      reconnectDelaySeconds: !<float> 2.000000
+      streamRateHz: !<float> 30.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck Specs Bridge Client</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">WebSocket transport to Micro Duck Simulator</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input string bridgeHost = "192.168.29.46" {"hint":"Bridge/Simulator IP address (e.g. 192.168.29.46 or 127.0.0.1 for editor testing)"}'
+    - '// @input float bridgePort = 8765 {"hint":"Bridge/Simulator WebSocket port (default 8765 or 8080)"}'
+    - '// @input bool useSecureWebSocket {"hint":"Use secure WebSocket (wss://) when connecting to hosted endpoints"}'
+    - '// @input bool autoConnect = true {"hint":"Automatically connect on lens startup"}'
+    - '// @input bool enableLogging = true {"hint":"Enable debug logging to Studio / Spectacles console"}'
+    - '// @input float reconnectDelaySeconds = 2 {"hint":"Auto-reconnect delay in seconds upon disconnection"}'
+    - '// @input float streamRateHz = 30 {"hint":"Packet streaming rate in Hz (default 30 Hz)"}'
