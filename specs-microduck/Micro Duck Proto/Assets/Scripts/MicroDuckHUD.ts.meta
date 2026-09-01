@@ -1,0 +1,67 @@
+- !<AssetImportMetadata/650960dc-cb79-4591-be5a-a323e4e89361>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 34395c2b-6193-4e70-946b-a4ca0cc3b983
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 34395c2b-6193-4e70-946b-a4ca0cc3b983
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> b7f714f1-9b5f-4286-9252-733eecaead24
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/b7f714f1-9b5f-4286-9252-733eecaead24>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 93fa8ef5-2f6c-44b1-8ab6-da071c315a80
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bridgeClient: false
+    connectionText: false
+    directionIndicator: false
+    gestureController: false
+    instructionText: false
+    popupText: false
+    showInstructions: false
+    statusText: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - gestureController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      bridgeClient: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      statusText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      connectionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      popupText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      instructionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      showInstructions: true
+      directionIndicator: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck AR HUD</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Spatial UI overlay for Spectacles with real-time telemetry</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input AssignableType gestureController {"hint":"Reference to the MicroDuckGestureController"}'
+    - '// @input AssignableType_1 bridgeClient {"hint":"Reference to the MicroDuckSpecsClient"}'
+    - '// @input Component.Text statusText {"hint":"Text component for main telemetry readout (Speed / Turn / Gesture)"}'
+    - '// @input Component.Text connectionText {"hint":"Text component for connection status badge"}'
+    - '// @input Component.Text popupText {"hint":"Text component for popup gesture announcements (Quack, Kick, etc.)"}'
+    - '// @input Component.Text instructionText {"hint":"Text component for displaying full gesture controls guide"}'
+    - '// @input bool showInstructions = true {"hint":"Show the on-screen gesture controls instruction card"}'
+    - '// @input SceneObject directionIndicator {"hint":"Visual transform or cursor indicating throttle / steering direction"}'

@@ -1,0 +1,55 @@
+- !<AssetImportMetadata/a1b56205-e83a-43ff-8a0a-aab8fc2562bd>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 7cbb3133-ecc0-4646-abb1-da7e9349d517
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 7cbb3133-ecc0-4646-abb1-da7e9349d517
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 96f5c9d5-d588-4471-beaf-0bd791e4ed0a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/96f5c9d5-d588-4471-beaf-0bd791e4ed0a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 4ece8afb-9ff6-4357-8850-40c66a5f1246
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bridgeHost: false
+    bridgePort: false
+    showDuckVisuals: false
+    showHandReticle: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - bridgeHost: 127.0.0.1
+      bridgePort: !<float> 8765.000000
+      showDuckVisuals: true
+      showHandReticle: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">🐤 Micro Duck App Bootstrap</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Auto-wires all scripts, visuals, gestures, and networking</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input string bridgeHost = "192.168.29.46" {"hint":"Local bridge IP for connecting to the simulation (e.g. 192.168.29.46 or 127.0.0.1)"}'
+    - '// @input float bridgePort = 8765 {"hint":"WebSocket port (default 8765)"}'
+    - '// @input bool showDuckVisuals = true {"hint":"Enable 3D holographic duck avatar"}'
+    - '// @input bool showHandReticle = true {"hint":"Enable hand-attached steering compass & reticle"}'

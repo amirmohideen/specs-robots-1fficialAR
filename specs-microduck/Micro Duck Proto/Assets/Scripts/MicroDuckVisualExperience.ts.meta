@@ -1,0 +1,58 @@
+- !<AssetImportMetadata/da873ce1-12c2-42e2-82b8-e974a0662464>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 0c006190-3034-42fe-a657-f9596412faa7
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 0c006190-3034-42fe-a657-f9596412faa7
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> a351edc8-4de8-42d6-b7ba-01cfc7a1df6b
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/a351edc8-4de8-42d6-b7ba-01cfc7a1df6b>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 622a83c4-b4f9-4b15-9252-fb2e29e159c1
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bridgeClient: false
+    duckDistanceCm: false
+    enableDuckAvatar: false
+    enableHandReticle: false
+    gestureController: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - gestureController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      bridgeClient: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      enableDuckAvatar: true
+      duckDistanceCm: !<float> 85.000000
+      enableHandReticle: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck 3D Visual Experience</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Renders 3D avatar and hand steering compass</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input AssignableType gestureController {"hint":"Reference to the gesture controller"}'
+    - '// @input AssignableType_1 bridgeClient {"hint":"Reference to the specs bridge client"}'
+    - '// @input bool enableDuckAvatar = true {"hint":"Spawn 3D Duck Hologram in front of user"}'
+    - '// @input float duckDistanceCm = 85 {"hint":"Distance of duck avatar in front of camera (in cm)"}'
+    - '// @input bool enableHandReticle = true {"hint":"Enable 3D hand compass / steering reticle attached to palm"}'

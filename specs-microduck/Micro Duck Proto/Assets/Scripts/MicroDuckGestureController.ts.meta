@@ -1,0 +1,82 @@
+- !<AssetImportMetadata/fdd17f84-441b-4f30-9c10-54a9f5753c9a>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 537732d2-71c3-4637-bd26-d8e6c44851d0
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 537732d2-71c3-4637-bd26-d8e6c44851d0
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 740fc6f9-4f72-451c-89ab-d2bf3c97877a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/740fc6f9-4f72-451c-89ab-d2bf3c97877a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: d8e47d90-ec7c-47aa-afb0-7a50cd127e5e
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bridgeClient: false
+    drivingHandType: false
+    enableEditorFallback: false
+    invertPitch: false
+    invertRotation: false
+    maxBackwardVelocity: false
+    maxForwardVelocity: false
+    maxTurnRate: false
+    pitchDeadzoneDeg: false
+    pitchMaxDeg: false
+    rollDeadzoneDeg: false
+    rollMaxDeg: false
+    smoothingAlpha: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - bridgeClient: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      drivingHandType: right
+      pitchDeadzoneDeg: !<float> 8.000000
+      pitchMaxDeg: !<float> 40.000000
+      rollDeadzoneDeg: !<float> 10.000000
+      rollMaxDeg: !<float> 45.000000
+      maxForwardVelocity: 0.500000
+      maxBackwardVelocity: 0.250000
+      maxTurnRate: !<float> 1.000000
+      invertPitch: false
+      invertRotation: true
+      smoothingAlpha: 0.350000
+      enableEditorFallback: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #FACC15; font-weight: bold;\">Micro Duck Gesture Controller</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Robust spatial tracking with adaptive smoothing and hysteresis</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @input AssignableType bridgeClient {"hint":"Reference to the MicroDuckSpecsClient component"}'
+    - "// @input string drivingHandType = \"right\" {\"hint\":\"Primary driving hand ('right' or 'left')\"}"
+    - '// @input float pitchDeadzoneDeg = 6 {"hint":"Forward pitch deadzone angle in degrees before moving"}'
+    - '// @input float pitchMaxDeg = 38 {"hint":"Maximum forward pitch angle in degrees for full speed"}'
+    - '// @input float rollDeadzoneDeg = 8 {"hint":"Roll deadzone angle in degrees before turning"}'
+    - '// @input float rollMaxDeg = 42 {"hint":"Maximum roll angle in degrees for full turn rate"}'
+    - '// @input float maxForwardVelocity = 0.5 {"hint":"Max forward velocity in meters/second (Legs: 0.5, Rollers: 0.6)"}'
+    - '// @input float maxBackwardVelocity = 0.25 {"hint":"Max backward velocity in meters/second (Legs: -0.25, Rollers: -0.3)"}'
+    - '// @input float maxTurnRate = 1 {"hint":"Max turn rate in radians/second"}'
+    - '// @input bool invertPitch {"hint":"Invert forward/backward pitch direction"}'
+    - '// @input bool invertRotation = true {"hint":"Invert left/right turning rotation direction"}'
+    - '// @input float smoothingAlpha = 0.28 {"hint":"Smoothing factor for velocity commands [0.1 = responsive, 0.6 = heavily smoothed]"}'
+    - '// @input bool enableEditorFallback = true {"hint":"Enable editor mouse fallback for testing in Lens Studio preview"}'
