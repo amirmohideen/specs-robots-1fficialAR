@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SO-101 setup." />
+    <meta property="og:title" content="SO-101 Helper" />
+    <meta property="og:description" content="SO-101 setup." />
+    <title>SO-101 Helper</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body data-page="home">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="SO-101 Helper home">
+        <span class="brand-mark" aria-hidden="true">S101</span>
+        <span>SO-101 Helper</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="./" aria-current="page">Setup</a>
+        <a href="./calibration.html">Calibration</a>
+        <a href="./assembly.html">Assembly</a>
+        <a href="https://github.com/a-sumo/so101-helper" rel="noreferrer">GitHub ↗</a>
+      </nav>
+    </header>
+
+    <main class="docs-main">
+      <aside class="docs-sidebar dot-surface" aria-label="Documentation sections">
+        <span class="docs-label">SETUP</span>
+        <a href="#connect">Connect</a>
+        <a href="./calibration.html">Calibration</a>
+        <a href="./assembly.html">Assembly</a>
+        <a href="#resources">Links</a>
+      </aside>
+
+      <article class="docs-content">
+        <header class="doc-title">
+          <p class="eyebrow">SO-101 HELPER</p>
+          <h1>SO-101</h1>
+          <p>Connect · calibrate · assemble</p>
+        </header>
+
+        <section class="doc-section" id="connect">
+          <h2>Connect</h2>
+          <div class="connection-flow" aria-label="SO-101 connects by USB to a bridge on the computer. The bridge connects over local Wi-Fi to the SO-101 Lens on Spectacles.">
+            <div><strong>SO-101</strong><span>Robot</span></div>
+            <span class="connection-edge">USB ↔</span>
+            <div><strong>Bridge</strong><span>Computer</span></div>
+            <span class="connection-edge">Wi-Fi ↔</span>
+            <div><strong>SO-101 Lens</strong><span>Spectacles</span></div>
+          </div>
+          <ol class="doc-steps">
+            <li><a href="https://huggingface.co/docs/lerobot/main/en/so101">Assembly + calibration ↗</a></li>
+            <li>USB logic + servo power.</li>
+            <li>Install <code class="command">python3.11 -m venv .venv
+.venv/bin/pip install -r requirements-bridge.txt</code></li>
+            <li>
+              Enroll
+              <code class="command">.venv/bin/python bridge/local_wss_helper.py setup --email owner@example.com</code>
+            </li>
+            <li>
+              Terminal 1
+              <code class="command">.venv/bin/python so101_bridge.py</code>
+            </li>
+            <li>
+              Terminal 2
+              <code class="command">.venv/bin/python bridge/local_wss_helper.py serve --pair</code>
+            </li>
+            <li>Lens PIN: 8 digits.</li>
+            <li>Terminal 1: <code>ARM</code> · Terminal 2: <code>enable</code></li>
+            <li><strong>Operate → Real arm → ARM LIVE</strong> · small motion.</li>
+          </ol>
+          <p><a href="https://github.com/a-sumo/so101-helper/blob/main/docs/real-arm.md">Full reference ↗</a></p>
+        </section>
+
+        <section class="doc-section" id="tools">
+          <h2>Tools</h2>
+          <div class="doc-links">
+            <a href="./calibration.html">
+              <span>Calibration</span>
+            </a>
+            <a href="./assembly.html">
+              <span>Assembly</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="doc-section" id="resources">
+          <h2>Resources</h2>
+          <ul class="resource-links">
+            <li><a href="https://huggingface.co/docs/lerobot/main/en/so101">LeRobot SO-101 guide ↗</a></li>
+            <li><a href="https://github.com/huggingface/lerobot">LeRobot repository ↗</a></li>
+            <li><a href="https://github.com/TheRobotStudio/SO-ARM100">SO-ARM100 files ↗</a></li>
+            <li><a href="https://wiki.seeedstudio.com/bus_servo_driver_board/">Seeed servo driver board ↗</a></li>
+            <li><a href="https://files.seeedstudio.com/wiki/bus_servo_driver_board/202004237_Servo_Driver_Board_for_Seeed_Studio_XIAO_SCH_PDF_250225.pdf">Seeed board schematic ↗</a></li>
+          </ul>
+        </section>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <span>SO-101 Helper</span>
+      <a href="https://github.com/a-sumo/so101-helper">Source ↗</a>
+    </footer>
+    <script type="module" src="./src/shell.js"></script>
+  </body>
+</html>

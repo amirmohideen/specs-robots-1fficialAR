@@ -1,0 +1,2786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Edit and preview the SO-101 mechanical assembly sequence.">
+<title>SO-101 Mechanical Assembly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/shared.css">
+<style>
+  :root {
+    --timeline-h: 260px;
+  }
+
+  .workbench-nav {
+    display: flex; align-items: center; gap: 5px; margin-bottom: 10px;
+    padding-bottom: 9px; border-bottom: 1px solid var(--border);
+    font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .workbench-nav a, .workbench-nav span {
+    color: var(--dim); text-decoration: none; padding: 3px 5px;
+    border-radius: 3px;
+  }
+  .workbench-nav a:hover { color: var(--text); background: var(--card-hover); }
+  .workbench-nav [aria-current='page'] { color: var(--blue); }
+
+  /* btn, input, select from shared.css */
+
+  #left-panel {
+    position: fixed; top: 12px; left: 12px; z-index: 10;
+    width: 280px; max-height: calc(100vh - var(--timeline-h) - 360px); overflow-y: auto;
+  }
+
+  #bottom-left-panel {
+    position: fixed; bottom: calc(var(--timeline-h) + 12px); left: 12px; z-index: 10;
+    width: 280px;
+  }
+
+  #step-editor {
+    position: fixed; top: 12px; right: 12px; z-index: 10;
+    width: 280px; max-height: calc(100vh - var(--timeline-h) - 36px); overflow-y: auto;
+  }
+
+  /* ─── Part list ─── */
+  .part-entry {
+    margin: 1px 0; font-size: 11px; display: flex; align-items: center; gap: 6px;
+    padding: 5px 8px; cursor: pointer; border-radius: var(--radius);
+    transition: background 0.1s;
+  }
+  .part-entry:hover { background: var(--card-hover); }
+  .part-entry.selected { background: var(--blue-muted); }
+  .part-entry.has-step { opacity: 1; }
+  .part-entry .part-icon { font-size: 9px; opacity: 0.5; min-width: 14px; }
+  .part-entry .part-name { font-size: 10px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .part-entry .part-link { font-size: 9px; color: var(--blue); }
+  .part-entry .step-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-left: auto; }
+  .link-header {
+    font-size: 10px; font-weight: 600; color: var(--blue);
+    padding: 8px 8px 4px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* ─── Step editor fields ─── */
+  .field-row {
+    display: flex; align-items: center; gap: 6px; margin: 4px 0;
+  }
+  .field-label {
+    font-size: 10px; font-weight: 500; color: var(--dim);
+    min-width: 60px; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .field-row input[type=number] { width: 60px; }
+
+  /* ─── Timeline ─── */
+  #timeline-panel {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+    background: var(--card); border-top: 1px solid var(--border);
+    height: var(--timeline-h);
+    display: flex; flex-direction: column;
+  }
+  #tl-resize-handle {
+    position: absolute; top: -3px; left: 0; right: 0; height: 6px;
+    cursor: ns-resize; z-index: 11;
+  }
+  #tl-resize-handle:hover, #tl-resize-handle:active {
+    background: var(--blue); opacity: 0.4;
+  }
+  .tl-header {
+    display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tl-header h3 {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dim); margin: 0;
+  }
+  .transport-time {
+    font-size: 11px; color: var(--blue); font-weight: 600; min-width: 60px;
+  }
+  .transport-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 12px;
+    padding: 3px 9px; cursor: pointer; border-radius: var(--radius);
+    transition: all 0.12s;
+  }
+  .transport-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .transport-btn.active { color: var(--blue); border-color: var(--blue); }
+  .tl-body { flex: 1; position: relative; overflow: hidden; }
+  #timeline-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+
+  /* ─── Toast ─── */
+  /* toast, joint-row, bg-swatch from shared.css */
+  #toast { bottom: calc(var(--timeline-h) + 20px); }
+
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-focus); }
+
+  /* ─── Timeline context menu ─── */
+  #tl-context-menu {
+    position: fixed; z-index: 100; display: none;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 4px 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5); min-width: 160px;
+  }
+  #tl-context-menu .ctx-item {
+    display: block; width: 100%; padding: 5px 14px;
+    font-size: 11px; color: var(--text); background: none; border: none;
+    text-align: left; cursor: pointer; font-family: inherit;
+  }
+  #tl-context-menu .ctx-item:hover { background: var(--blue-muted); }
+  #tl-context-menu .ctx-item.danger { color: #f87171; }
+  #tl-context-menu .ctx-item.danger:hover { background: rgba(248,113,113,0.1); }
+  #tl-context-menu .ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
+
+  /* Catalogue labels */
+  .cat-label {
+    background: rgba(33, 169, 193, 0.9);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .cat-label .cat-sub {
+    font-weight: 400;
+    font-size: 9px;
+    opacity: 0.8;
+    text-transform: none;
+    display: block;
+  }
+  .cat-group-label {
+    background: rgba(236, 120, 89, 0.9);
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+</style>
+</head>
+<body>
+
+<div id="left-panel" class="panel">
+  <nav class="workbench-nav" aria-label="SO-101 Helper">
+    <a href="./">Docs</a>
+    <a href="./calibration.html">Calibration</a>
+    <span aria-current="page">Assembly</span>
+  </nav>
+  <h2>Assembly Sequence</h2>
+
+  <div class="section">
+    <div class="section-label">Duration</div>
+    <div class="field-row">
+      <input type="number" id="total-duration" value="26" min="1" max="120" step="1" style="width:60px;">
+      <span style="font-size:10px;color:var(--dim);">seconds</span>
+      <button class="btn btn-sm" id="auto-sequence-btn" title="Auto-generate sequence from part list">Auto</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Parts & Screws</div>
+    <div id="parts-container"><span style="color:var(--dim);font-size:11px;">Loading...</span></div>
+  </div>
+
+
+</div>
+
+<div id="bottom-left-panel" class="panel">
+  <div class="section">
+    <div class="section-label">Joints</div>
+    <div id="joints-container"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Background</div>
+    <div id="bg-swatches" style="display:flex;gap:4px;flex-wrap:wrap;">
+      <div class="bg-swatch active" data-bg="#e7f1f2" style="background:#e7f1f2;" title="Lens cyan"></div>
+      <div class="bg-swatch" data-bg="#dbeaec" style="background:#dbeaec;" title="Cyan grey"></div>
+      <div class="bg-swatch" data-bg="#c8dde0" style="background:#c8dde0;" title="Soft cyan"></div>
+      <div class="bg-swatch" data-bg="#f2f8f8" style="background:#f2f8f8;" title="White"></div>
+      <div class="bg-swatch" data-bg="#d7e3e5" style="background:#d7e3e5;" title="Cool grey"></div>
+      <div class="bg-swatch" data-bg="#18181b" style="background:#18181b;border-color:#3f3f46;" title="Dark"></div>
+      <input type="color" id="bg-custom" value="#e7f1f2" style="width:20px;height:20px;padding:0;border:1px solid var(--border);border-radius:3px;cursor:pointer;">
+    </div>
+  </div>
+
+  <div class="section" style="display:flex;gap:4px;flex-wrap:wrap;">
+    <button class="btn btn-sm" id="load-seq-btn">Load</button>
+    <input type="file" id="load-seq-file" accept=".json" style="display:none;">
+    <button class="btn btn-sm btn-primary" id="save-btn" title="Save to localStorage (Cmd+S)">Save</button>
+    <button class="btn btn-sm" id="export-seq-btn">Export</button>
+    <button class="btn btn-sm" id="export-glb-btn" title="Export GLB with baked animation">GLB</button>
+    <button class="btn btn-sm" id="export-ls-btn" title="Export LS config (VFX + mechanical)">LS Config</button>
+    <button class="btn btn-sm" id="reset-all-btn" style="color:#f87171;" title="Clear all steps and reset">Reset</button>
+    <button class="btn btn-sm" id="toggle-servo-hunt" title="Servo hunt: joints rotate during assembly (Iron Man mode)">Hunt</button>
+    <button class="btn btn-sm" id="toggle-wireframe">Wire</button>
+    <button class="btn btn-sm" id="toggle-xray">X-ray</button>
+    <button class="btn btn-sm" id="toggle-grid">Floor grid</button>
+    <button class="btn btn-sm" id="toggle-shadows">Shadows</button>
+    <button class="btn btn-sm" id="toggle-catalogue" title="Parts catalogue: exploded view with labels">Catalogue</button>
+  </div>
+</div>
+
+<div id="step-editor" class="panel" style="display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div id="step-name" style="font-size:11px;font-weight:600;color:var(--blue);"></div>
+    <button class="btn btn-sm btn-ghost" id="remove-step-btn" style="font-size:9px;color:var(--dim);padding:2px 6px;">&times;</button>
+  </div>
+
+  <div class="section" style="margin:4px 0;">
+    <div class="section-label">Offset (mm)</div>
+    <div class="field-row">
+      <span class="field-label" style="min-width:16px;">X</span>
+      <input type="number" id="off-x" step="1" value="0" style="width:52px;">
+      <span class="field-label" style="min-width:16px;">Y</span>
+      <input type="number" id="off-y" step="1" value="50" style="width:52px;">
+      <span class="field-label" style="min-width:16px;">Z</span>
+      <input type="number" id="off-z" step="1" value="0" style="width:52px;">
+    </div>
+  </div>
+
+  <div class="section" style="margin:4px 0;">
+    <div class="section-label">Rotation (deg)</div>
+    <div class="field-row">
+      <span class="field-label" style="min-width:16px;">X</span>
+      <input type="number" id="rot-x" step="5" value="0" style="width:52px;">
+      <span class="field-label" style="min-width:16px;">Y</span>
+      <input type="number" id="rot-y" step="5" value="0" style="width:52px;">
+      <span class="field-label" style="min-width:16px;">Z</span>
+      <input type="number" id="rot-z" step="5" value="0" style="width:52px;">
+    </div>
+  </div>
+
+  <div class="section" style="margin:4px 0;">
+    <div class="field-row">
+      <span class="field-label" style="min-width:32px;">Start</span>
+      <input type="number" id="time-start" step="0.5" value="0" min="0" style="width:50px;">
+      <span class="field-label" style="min-width:24px;">End</span>
+      <input type="number" id="time-end" step="0.5" value="2" min="0" style="width:50px;">
+      <span class="field-label" style="min-width:16px;">s</span>
+      <select id="easing-select" style="flex:1;">
+        <option value="ease-in-out">ease-in-out</option>
+        <option value="ease-in">ease-in</option>
+        <option value="ease-out">ease-out</option>
+        <option value="linear">linear</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section" id="screw-opts" style="display:none;margin:4px 0;">
+    <div class="field-row">
+      <span class="field-label" style="min-width:50px;">Turns</span>
+      <input type="number" id="screw-rotations" step="1" value="10" min="0" max="50" style="width:50px;">
+    </div>
+  </div>
+
+  <div style="display:flex;gap:4px;margin-top:6px;">
+    <button class="btn btn-sm" id="reset-pos-btn">Reset</button>
+    <button class="btn btn-sm btn-primary" id="set-hover-btn" style="flex:1;">Set Hover Position</button>
+  </div>
+</div>
+
+<div id="timeline-panel">
+  <div id="tl-resize-handle"></div>
+  <div class="tl-header">
+    <h3>Timeline</h3>
+    <span class="transport-time" id="time-display">0.00s</span>
+    <button class="transport-btn" id="tl-start" title="Go to start">|&lt;</button>
+    <button class="transport-btn transport-play" id="tl-play" title="Play/Pause">&#9654;</button>
+    <button class="transport-btn" id="tl-end" title="Go to end">&gt;|</button>
+    <span style="flex:1;"></span>
+    <button class="transport-btn" id="tl-compact" title="Compact / Expanded view">&#9638;</button>
+    <button class="transport-btn" id="tl-fit" title="Fit all (0)">Fit</button>
+    <span style="font-size:10px;color:var(--dim);" id="step-count-display">0 steps</span>
+  </div>
+  <div class="tl-body">
+    <canvas id="timeline-canvas"></canvas>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div id="tl-context-menu">
+  <button class="ctx-item" data-act="insert-above">Insert empty track above</button>
+  <button class="ctx-item" data-act="insert-below">Insert empty track below</button>
+  <div class="ctx-sep"></div>
+  <button class="ctx-item" data-act="move-up">Move up</button>
+  <button class="ctx-item" data-act="move-down">Move down</button>
+  <div class="ctx-sep"></div>
+  <button class="ctx-item" data-act="duplicate">Duplicate</button>
+  <button class="ctx-item danger" data-act="delete">Delete track</button>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import URDFLoader from 'urdf-loader';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { createStudioScene, applyURDFMaterials } from './src/studio-scene.js';
+import { createGnomon } from './src/gnomon.js';
+import { exportAssemblyGLB, generateLSConfig } from './src/glb-export.js';
+import { ASSEMBLY_PALETTE, classifyPhysicalPart } from './src/assembly-palette.js';
+
+// ─── Toast ───
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ─── Scene ───
+const { scene, camera, renderer, controls, grid, floor, setBackground, onResize } =
+  createStudioScene({ fov: 40, cameraPos: [0.28, 0.28, 0.42], background: '#e7f1f2' });
+
+// ─── Post-processing: hover + selection outlines ───
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const hoverOutline = new OutlinePass(new THREE.Vector2(innerWidth, innerHeight), scene, camera);
+hoverOutline.visibleEdgeColor.set(0x21a9c1);
+hoverOutline.hiddenEdgeColor.set(0x08768a);
+hoverOutline.edgeStrength = 3;
+hoverOutline.edgeThickness = 1.2;
+hoverOutline.edgeGlow = 0;
+
+const selectOutline = new OutlinePass(new THREE.Vector2(innerWidth, innerHeight), scene, camera);
+selectOutline.visibleEdgeColor.set(0xec7859);
+selectOutline.hiddenEdgeColor.set(0xec7859);
+selectOutline.edgeStrength = 4;
+selectOutline.edgeThickness = 1.5;
+selectOutline.edgeGlow = 0.5;
+
+composer.addPass(hoverOutline);
+composer.addPass(selectOutline);
+composer.addPass(new OutputPass());
+
+// ─── Gnomon ───
+const gnomon = createGnomon(camera, controls, {
+  target: controls.target.clone(),
+  viewDist: 0.45,
+});
+
+// ─── Transform gizmo ───
+const gizmo = new TransformControls(camera, renderer.domElement);
+gizmo.setMode('translate');
+gizmo.setSize(0.5);
+gizmo.visible = false;
+gizmo.enabled = false;
+scene.add(gizmo.getHelper());
+
+gizmo.addEventListener('dragging-changed', (e) => {
+  controls.enabled = !e.value;
+});
+
+// World-space transform-control anchor in the scene root.
+const gizmoTarget = new THREE.Object3D();
+scene.add(gizmoTarget);
+
+// ─── Raycaster + hover/selection state ───
+const raycaster = new THREE.Raycaster();
+const _mouse = new THREE.Vector2();
+let hoveredPart = null;
+let selectedPart = null;
+let _pointerDown = new THREE.Vector2();
+
+function getRaycastTargets() {
+  const targets = [];
+  if (robot) robot.traverse(c => {
+    if (c.isMesh && c.visible) targets.push(c);
+  });
+  for (const si of screw3DInstances) {
+    if (si.mesh.visible) targets.push(si.mesh);
+  }
+  for (const ep of extraParts) {
+    for (const m of ep.meshes) { if (m.visible) targets.push(m); }
+  }
+  return targets;
+}
+
+// Resolve the URDF link name from the mesh ancestry.
+function findLinkForMesh(mesh) {
+  // Check the direct mesh-to-link mapping.
+  const mapped = meshToLink.get(mesh);
+  if (mapped && mapped !== 'unknown') return mapped;
+  // Traverse ancestors when the direct mapping is unavailable.
+  let node = mesh.parent;
+  while (node) {
+    // Match the current ancestor against known links.
+    if (robot && robot.links) {
+      for (const [name, linkObj] of Object.entries(robot.links)) {
+        if (node === linkObj) return name;
+      }
+    }
+    node = node.parent;
+  }
+  return null;
+}
+
+function meshToPart(mesh) {
+  // Resolve annotated screws directly.
+  if (mesh.userData.isScrew && mesh.userData.annotation) {
+    return partsCatalog.find(p => p.type === 'screw' && p.name === mesh.userData.annotation.name) || null;
+  }
+
+  // Resolve extra GLB parts from their metadata.
+  if (mesh.userData.extraPart) {
+    return partsCatalog.find(p => p.type === 'extra' && p.name === mesh.userData.extraPart) || null;
+  }
+
+  // Match direct mesh references.
+  for (const p of partsCatalog) {
+    if (p.type === 'mesh' && p.mesh === mesh) return p;
+  }
+
+  // Match the catalog entry through the containing link.
+  const linkName = findLinkForMesh(mesh);
+  if (!linkName) return null;
+
+  const filename = mesh.userData.filename;
+  // Match the exact link and filename when available.
+  if (filename) {
+    const m = partsCatalog.find(p => p.type === 'mesh' && p.link === linkName && p.name === filename);
+    if (m) return m;
+  }
+  // Fallback: any mesh part on this link
+  const m = partsCatalog.find(p => p.type === 'mesh' && p.link === linkName);
+  if (m) return m;
+
+  // Last resort: create an ad-hoc catalog entry for this mesh
+  const id = `${linkName}/${filename || 'mesh_' + partsCatalog.length}`;
+  const entry = { id, name: filename || linkName, type: 'mesh', link: linkName, mesh };
+  partsCatalog.push(entry);
+  console.log(`[meshToPart] Created ad-hoc entry: ${id}`);
+  updatePartsUI();
+  return entry;
+}
+
+function updateOutlines() {
+  // Selection
+  const selMeshes = [];
+  if (selectedPart) {
+    if (selectedPart.type === 'extra' && selectedPart.meshes) selMeshes.push(...selectedPart.meshes);
+    else if (selectedPart.type === 'mesh' && selectedPart.mesh) selMeshes.push(selectedPart.mesh);
+    else if (selectedPart.type === 'screw') {
+      const si = screw3DInstances.find(s => s.annotation.name === selectedPart.name);
+      if (si) selMeshes.push(si.mesh);
+    }
+  }
+  selectOutline.selectedObjects = selMeshes;
+
+  // Hover (exclude selected to avoid double-outline)
+  const hovMeshes = [];
+  if (hoveredPart && hoveredPart !== selectedPart) {
+    if (hoveredPart.type === 'extra' && hoveredPart.meshes) hovMeshes.push(...hoveredPart.meshes);
+    else if (hoveredPart.type === 'mesh' && hoveredPart.mesh) hovMeshes.push(hoveredPart.mesh);
+    else if (hoveredPart.type === 'screw') {
+      const si = screw3DInstances.find(s => s.annotation.name === hoveredPart.name);
+      if (si) hovMeshes.push(si.mesh);
+    }
+  }
+  hoverOutline.selectedObjects = hovMeshes;
+  hoverOutline.enabled = hovMeshes.length > 0;
+}
+
+// Hover: pointermove on canvas
+renderer.domElement.addEventListener('pointermove', (e) => {
+  if (!robot || partsCatalog.length === 0) return;
+  if (gizmoActive && gizmo.dragging) return;
+
+  const rect = renderer.domElement.getBoundingClientRect();
+  _mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  _mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(_mouse, camera);
+
+  const targets = getRaycastTargets();
+  const hits = raycaster.intersectObjects(targets, false);
+  const newHover = hits.length > 0 ? meshToPart(hits[0].object) : null;
+
+  if (newHover !== hoveredPart) {
+    hoveredPart = newHover;
+    updateOutlines();
+  }
+  renderer.domElement.style.cursor = hoveredPart ? 'pointer' : '';
+});
+
+// Click: select part + auto-show gizmo
+renderer.domElement.addEventListener('pointerdown', (e) => { _pointerDown.set(e.clientX, e.clientY); });
+
+renderer.domElement.addEventListener('click', (e) => {
+  if (!robot || partsCatalog.length === 0) return;
+  if (gizmoActive && gizmo.dragging) return;
+  // Ignore orbit drags
+  const dx = e.clientX - _pointerDown.x, dy = e.clientY - _pointerDown.y;
+  if (Math.sqrt(dx * dx + dy * dy) > 5) return;
+
+  const rect = renderer.domElement.getBoundingClientRect();
+  _mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  _mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(_mouse, camera);
+
+  const hits = raycaster.intersectObjects(getRaycastTargets(), false);
+  if (hits.length > 0) {
+    const part = meshToPart(hits[0].object);
+    if (part) {
+      let stepIdx = findStep(part.id);
+      if (stepIdx < 0) { addStep(part.id); stepIdx = steps.length - 1; }
+      selectStep(stepIdx);
+      return;
+    }
+  }
+  // Clicked empty space → deselect
+  selectStep(-1);
+});
+
+// ─── URDF ───
+let robot = null;
+const meshToLink = new Map();
+const linkMeshes = new Map(); // link name → [{mesh, filename, visualIdx}]
+
+async function loadURDF() {
+  return new Promise((resolve, reject) => {
+    const loader = new URDFLoader(new THREE.LoadingManager());
+    loader.workingPath = 'urdf/';
+    const defaultLoadMesh = loader.loadMeshCb;
+    loader.loadMeshCb = (path, manager, onComplete) => {
+      defaultLoadMesh(path, manager, (obj, err) => {
+        if (obj) {
+          const filename = path.split('/').pop().replace('.stl', '');
+          obj.traverse(c => { if (c.isMesh) c.userData.filename = filename; });
+        }
+        onComplete(obj, err);
+      });
+    };
+    loader.load('urdf/so101_new_calib.urdf', (r) => {
+      applyURDFMaterials(r);
+      resolve(r);
+    }, null, reject);
+  });
+}
+
+// Wait for meshes to be loaded into the robot scene graph
+function waitForMeshes(robotObj, minCount = 5, timeout = 15000) {
+  return new Promise((resolve) => {
+    let mc = 0;
+    robotObj.traverse(c => { if (c.isMesh) mc++; });
+    if (mc >= minCount) { resolve(mc); return; }
+    const start = Date.now();
+    const poll = setInterval(() => {
+      mc = 0;
+      robotObj.traverse(c => { if (c.isMesh) mc++; });
+      if (mc >= minCount || Date.now() - start > timeout) {
+        clearInterval(poll);
+        resolve(mc);
+      }
+    }, 100);
+  });
+}
+
+function buildMeshToLinkMap(robotRoot) {
+  // Use robot.links directly for reliable link→mesh mapping
+  if (robotRoot.links) {
+    for (const [linkName, linkObj] of Object.entries(robotRoot.links)) {
+      const meshesForLink = [];
+      linkObj.traverse(child => {
+        if (!child.isMesh) return;
+        // Skip meshes owned by child joints (they belong to a different link)
+        let node = child.parent;
+        let ownedByThisLink = true;
+        while (node && node !== linkObj) {
+          if (node.isURDFJoint || node.type === 'URDFJoint') { ownedByThisLink = false; break; }
+          node = node.parent;
+        }
+        if (!ownedByThisLink) return;
+        meshToLink.set(child, linkName);
+        meshesForLink.push(child);
+      });
+
+      // Build linkMeshes — deduplicate by filename
+      const seenFn = new Set();
+      const entries = [];
+      for (const mesh of meshesForLink) {
+        const fn = mesh.userData.filename || `mesh_${entries.length}`;
+        if (seenFn.has(fn)) continue;
+        seenFn.add(fn);
+        entries.push({ mesh, filename: fn, visualIdx: entries.length });
+      }
+      if (entries.length > 0) linkMeshes.set(linkName, entries);
+    }
+  }
+
+  // Fallback: any unmapped mesh gets 'unknown'
+  robotRoot.traverse(obj => {
+    if (obj.isMesh && !meshToLink.has(obj)) {
+      meshToLink.set(obj, 'unknown');
+    }
+  });
+
+  console.log(`[MeshMap] ${meshToLink.size} meshes mapped, ${linkMeshes.size} links with meshes:`,
+    [...linkMeshes.entries()].map(([k, v]) => `${k}(${v.length})`).join(', '));
+}
+
+// ─── Extra GLB parts (e.g. servo driver board) ───
+const EXTRA_GLBS = [
+  { file: 'bus-servo-driver-board-textured.glb', name: 'Servo Driver Board', link: 'base_link',
+    // Default rest position: near the base (model is in mm, scene in meters)
+    position: [0, 0.015, -0.04], rotation: [Math.PI / 2, 0, 0], scale: 0.001 },
+];
+let extraParts = []; // { group, name, link, meshes[] }
+
+async function loadExtraGLBs() {
+  const loader = new GLTFLoader();
+  for (const cfg of EXTRA_GLBS) {
+    try {
+      const gltf = await new Promise((resolve, reject) => {
+        loader.load(cfg.file, resolve, null, reject);
+      });
+      const group = gltf.scene;
+      group.name = cfg.name;
+
+      // Apply default transform
+      if (cfg.position) group.position.set(...cfg.position);
+      if (cfg.rotation) group.rotation.set(...cfg.rotation);
+      if (cfg.scale != null) {
+        const s = typeof cfg.scale === 'number' ? [cfg.scale, cfg.scale, cfg.scale] : cfg.scale;
+        group.scale.set(...s);
+      }
+
+      // Collect meshes for raycasting & catalog
+      const meshes = [];
+      group.traverse(c => {
+        if (c.isMesh) {
+          c.castShadow = true;
+          c.receiveShadow = true;
+          c.userData.extraPart = cfg.name;
+          meshes.push(c);
+        }
+      });
+
+      scene.add(group);
+      extraParts.push({ group, name: cfg.name, link: cfg.link, meshes, file: cfg.file });
+      console.log(`[Extra] Loaded ${cfg.name}: ${meshes.length} meshes`);
+    } catch (e) {
+      console.warn(`[Extra] Failed to load ${cfg.file}:`, e);
+    }
+  }
+}
+
+// ─── Screw loading ───
+let screwMeshes = { screw_m3x6: null, screw_m2x8: null };
+let screwAnnotations = []; // loaded from JSON
+let screw3DInstances = []; // { mesh, annotation, link }
+
+async function loadScrewGLB() {
+  const loader = new GLTFLoader();
+  return new Promise((resolve) => {
+    loader.load('screws.glb', (gltf) => {
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          if (c.name.includes('m3x6') || c.parent?.name?.includes('m3x6')) screwMeshes.screw_m3x6 = c;
+          else if (c.name.includes('m2x8') || c.parent?.name?.includes('m2x8')) screwMeshes.screw_m2x8 = c;
+        }
+      });
+      const meshes = [];
+      gltf.scene.traverse(c => { if (c.isMesh) meshes.push(c); });
+      if (!screwMeshes.screw_m3x6 && meshes.length > 0) screwMeshes.screw_m3x6 = meshes[0];
+      if (!screwMeshes.screw_m2x8 && meshes.length > 1) screwMeshes.screw_m2x8 = meshes[1];
+      resolve();
+    }, null, () => resolve());
+  });
+}
+
+async function loadAnnotations() {
+  try {
+    const resp = await fetch('so101_assembly_annotations_clean.json');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    screwAnnotations = data.screws || [];
+  } catch (e) { console.warn('No annotations found'); }
+}
+
+function spawnScrews() {
+  for (const si of screw3DInstances) scene.remove(si.mesh);
+  screw3DInstances = [];
+
+  for (const ann of screwAnnotations) {
+    const template = screwMeshes[ann.type];
+    if (!template) continue;
+
+    const inst = template.clone();
+    inst.material = template.material.clone();
+    inst.material.color = new THREE.Color(ASSEMBLY_PALETTE.fastener.value);
+    inst.material.metalness = 0.7;
+    inst.material.roughness = 0.2;
+    inst.castShadow = true;
+
+    const localPos = new THREE.Vector3(...ann.local_pos);
+    const normal = new THREE.Vector3(...ann.normal);
+    const depth = (ann.depth_mm || 5) / 1000;
+
+    // Place at end position (fully inserted)
+    // Transform from annotation space to world
+    // Annotations with link='unknown' are in URDF-space (needs robot transform)
+    let worldPos, worldNormal;
+    if (ann.link !== 'unknown' && robot.frames[ann.link]) {
+      const linkObj = robot.frames[ann.link];
+      linkObj.updateWorldMatrix(true, false);
+      worldPos = localPos.clone().applyMatrix4(linkObj.matrixWorld);
+      worldNormal = normal.clone().transformDirection(linkObj.matrixWorld);
+    } else {
+      // URDF space → apply robot transform
+      worldPos = localPos.clone().applyMatrix4(robot.matrixWorld);
+      worldNormal = normal.clone().applyQuaternion(robot.quaternion);
+    }
+
+    inst.position.copy(worldPos).addScaledVector(worldNormal, -depth);
+    const insertDir = worldNormal.clone().negate();
+    inst.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), insertDir);
+    inst.userData.annotation = ann;
+    inst.userData.isScrew = true;
+
+    scene.add(inst);
+    screw3DInstances.push({ mesh: inst, annotation: ann, localPos, normal, depth });
+  }
+}
+
+// ─── Assembly Steps ───
+const SEQUENCE_SCHEMA_VERSION = 3;
+const SEQUENCE_STORAGE_KEY = `assembly_sequence:v${SEQUENCE_SCHEMA_VERSION}`;
+let steps = [];
+let selectedStepIdx = -1;
+let totalDuration = 26;
+
+// Parts catalog: built from URDF meshes + screw annotations
+let partsCatalog = []; // { id, name, type:'mesh'|'screw', link, mesh?, annotation? }
+
+function buildPartsCatalog() {
+  partsCatalog = [];
+
+  // Add deduplicated URDF visual meshes to the parts catalog.
+  const seen = new Set();
+  for (const [linkName, meshList] of linkMeshes) {
+    // Use one visual mesh for each filename within a link.
+    const filenames = new Set();
+    for (const entry of meshList) {
+      if (filenames.has(entry.filename)) continue;
+      filenames.add(entry.filename);
+      const id = `${linkName}/${entry.filename}`;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      partsCatalog.push({
+        id,
+        name: entry.filename,
+        type: 'mesh',
+        link: linkName,
+        mesh: entry.mesh,
+      });
+    }
+  }
+
+  // Add screws
+  for (const ann of screwAnnotations) {
+    partsCatalog.push({
+      id: `screw/${ann.name}`,
+      name: ann.name,
+      type: 'screw',
+      link: ann.link !== 'unknown' ? ann.link : findNearestLink(new THREE.Vector3(...ann.local_pos)),
+      annotation: ann,
+    });
+  }
+
+  // Add extra GLB parts
+  for (const ep of extraParts) {
+    partsCatalog.push({
+      id: `extra/${ep.name}`,
+      name: ep.name,
+      type: 'extra',
+      link: ep.link,
+      group: ep.group,
+      meshes: ep.meshes,
+    });
+  }
+}
+
+function findNearestLink(pos) {
+  if (!robot || !robot.frames) return 'base_link';
+  const wp = pos.clone().applyMatrix4(robot.matrixWorld);
+  let best = 'base_link', bestD = Infinity;
+  for (const [name, obj] of Object.entries(robot.frames)) {
+    obj.updateWorldMatrix(true, false);
+    const lp = new THREE.Vector3(); obj.getWorldPosition(lp);
+    const d = lp.distanceTo(wp);
+    if (d < bestD) { bestD = d; best = name; }
+  }
+  return best;
+}
+
+function findStep(partId) {
+  return steps.findIndex(s => s.id === partId);
+}
+
+function addStep(partId) {
+  const part = partsCatalog.find(p => p.id === partId);
+  if (!part || findStep(partId) >= 0) return;
+
+  const isScrew = part.type === 'screw';
+  const step = {
+    id: partId,
+    target: part.name,
+    link: part.link,
+    start_offset: { pos: [0, 0, 0], rot: [0, 0, 0] },
+    time: [0, 2],
+    easing: 'ease-in-out',
+    fade_lead: isScrew ? 0.15 : 0.3,
+  };
+  if (isScrew) step.screw_rotations = 10;
+
+  steps.push(step);
+  updatePartsUI();
+  updateTimeline();
+  selectStep(steps.length - 1);
+  toast(`Added step: ${part.name}`);
+}
+
+function removeStep(idx) {
+  if (idx < 0 || idx >= steps.length) return;
+  steps.splice(idx, 1);
+  if (selectedStepIdx === idx) selectedStepIdx = -1;
+  else if (selectedStepIdx > idx) selectedStepIdx--;
+  updatePartsUI();
+  updateStepEditor();
+  updateTimeline();
+}
+
+function selectStep(idx) {
+  selectedStepIdx = idx;
+  if (idx >= 0 && idx < steps.length) {
+    selectedPart = partsCatalog.find(p => p.id === steps[idx].id) || null;
+  } else {
+    selectedPart = null;
+  }
+  updatePartsUI();
+  updateStepEditor();
+  updateOutlines();
+  updateTimeline();
+
+  // Auto gizmo — always clean up first, then attach if selected
+  hideGizmo();
+  if (idx >= 0) showGizmo();
+}
+
+// ─── Parts list UI ───
+function updatePartsUI() {
+  const container = document.getElementById('parts-container');
+  if (partsCatalog.length === 0) {
+    container.innerHTML = '<span style="color:var(--dim);font-size:11px;">No parts loaded</span>';
+    return;
+  }
+
+  // Group by link
+  const byLink = {};
+  for (const p of partsCatalog) {
+    if (!byLink[p.link]) byLink[p.link] = [];
+    byLink[p.link].push(p);
+  }
+
+  const linkOrder = ['base_link', 'shoulder_link', 'upper_arm_link', 'lower_arm_link', 'wrist_link', 'gripper_link'];
+  const orderedLinks = linkOrder.filter(l => byLink[l]);
+  // Add any remaining links
+  for (const l of Object.keys(byLink)) {
+    if (!orderedLinks.includes(l)) orderedLinks.push(l);
+  }
+
+  let html = '';
+  for (const link of orderedLinks) {
+    const parts = byLink[link];
+    html += `<div class="link-header">${link}</div>`;
+    for (const p of parts) {
+      const stepIdx = findStep(p.id);
+      const hasStep = stepIdx >= 0;
+      const isSelected = hasStep && (stepIdx === selectedStepIdx || tlSelectedSet.has(stepIdx));
+      const icon = p.type === 'screw' ? '&#9881;' : p.type === 'extra' ? '&#9645;' : '&#9632;';
+      html += `<div class="part-entry${isSelected ? ' selected' : ''}${hasStep ? ' has-step' : ''}" data-id="${p.id}">
+        <span class="part-icon">${icon}</span>
+        <span class="part-name">${p.name}</span>
+        ${hasStep ? '<span class="step-indicator"></span>' : ''}
+      </div>`;
+    }
+  }
+  container.innerHTML = html;
+
+  // Wire clicks (with Cmd/Ctrl toggle + Shift range select)
+  container.querySelectorAll('.part-entry').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const id = el.dataset.id;
+      const stepIdx = findStep(id);
+      if (stepIdx < 0) { addStep(id); return; }
+
+      if (e.shiftKey) {
+        const anchor = selectedStepIdx >= 0 ? selectedStepIdx : 0;
+        const lo = Math.min(anchor, stepIdx), hi = Math.max(anchor, stepIdx);
+        for (let r = lo; r <= hi; r++) tlSelectedSet.add(r);
+        selectStep(stepIdx);
+      } else if (e.metaKey || e.ctrlKey) {
+        if (tlSelectedSet.has(stepIdx)) tlSelectedSet.delete(stepIdx); else tlSelectedSet.add(stepIdx);
+        selectedStepIdx = stepIdx; selectedPart = partsCatalog.find(p => p.id === steps[stepIdx].id) || null;
+        updatePartsUI(); updateStepEditor(); updateOutlines(); updateTimeline();
+      } else {
+        tlSelectedSet.clear();
+        selectStep(stepIdx);
+      }
+    });
+  });
+
+  document.getElementById('step-count-display').textContent = `${steps.length} steps`;
+}
+
+// ─── Step editor ───
+function updateStepEditor() {
+  const panel = document.getElementById('step-editor');
+  if (selectedStepIdx < 0 || selectedStepIdx >= steps.length) {
+    panel.style.display = 'none';
+    hideGizmo();
+    return;
+  }
+  panel.style.display = '';
+  const step = steps[selectedStepIdx];
+  document.getElementById('step-name').textContent = step.target;
+  document.getElementById('off-x').value = Math.round(step.start_offset.pos[0] * 1000);
+  document.getElementById('off-y').value = Math.round(step.start_offset.pos[1] * 1000);
+  document.getElementById('off-z').value = Math.round(step.start_offset.pos[2] * 1000);
+  document.getElementById('rot-x').value = Math.round(step.start_offset.rot[0] * 180 / Math.PI);
+  document.getElementById('rot-y').value = Math.round(step.start_offset.rot[1] * 180 / Math.PI);
+  document.getElementById('rot-z').value = Math.round(step.start_offset.rot[2] * 180 / Math.PI);
+  document.getElementById('time-start').value = step.time[0];
+  document.getElementById('time-end').value = step.time[1];
+  document.getElementById('easing-select').value = step.easing;
+
+  const isScrew = step.id.startsWith('screw/');
+  document.getElementById('screw-opts').style.display = isScrew ? '' : 'none';
+  if (isScrew) {
+    document.getElementById('screw-rotations').value = step.screw_rotations || 10;
+  }
+}
+
+// Wire editor inputs
+for (const id of ['off-x', 'off-y', 'off-z']) {
+  document.getElementById(id).addEventListener('change', () => {
+    if (selectedStepIdx < 0) return;
+    const step = steps[selectedStepIdx];
+    step.start_offset.pos[0] = parseFloat(document.getElementById('off-x').value) / 1000;
+    step.start_offset.pos[1] = parseFloat(document.getElementById('off-y').value) / 1000;
+    step.start_offset.pos[2] = parseFloat(document.getElementById('off-z').value) / 1000;
+    applyAnimationState();
+  });
+}
+for (const id of ['rot-x', 'rot-y', 'rot-z']) {
+  document.getElementById(id).addEventListener('change', () => {
+    if (selectedStepIdx < 0) return;
+    const step = steps[selectedStepIdx];
+    step.start_offset.rot[0] = parseFloat(document.getElementById('rot-x').value) * Math.PI / 180;
+    step.start_offset.rot[1] = parseFloat(document.getElementById('rot-y').value) * Math.PI / 180;
+    step.start_offset.rot[2] = parseFloat(document.getElementById('rot-z').value) * Math.PI / 180;
+    applyAnimationState();
+  });
+}
+for (const id of ['time-start', 'time-end']) {
+  document.getElementById(id).addEventListener('change', () => {
+    if (selectedStepIdx < 0) return;
+    const step = steps[selectedStepIdx];
+    step.time[0] = parseFloat(document.getElementById('time-start').value);
+    step.time[1] = parseFloat(document.getElementById('time-end').value);
+    updateTimeline();
+  });
+}
+document.getElementById('easing-select').addEventListener('change', (e) => {
+  if (selectedStepIdx < 0) return;
+  steps[selectedStepIdx].easing = e.target.value;
+});
+document.getElementById('screw-rotations').addEventListener('change', (e) => {
+  if (selectedStepIdx < 0) return;
+  steps[selectedStepIdx].screw_rotations = parseInt(e.target.value);
+});
+document.getElementById('remove-step-btn').addEventListener('click', () => {
+  if (selectedStepIdx >= 0) removeStep(selectedStepIdx);
+});
+document.getElementById('total-duration').addEventListener('change', (e) => {
+  totalDuration = parseFloat(e.target.value);
+  updateTimeline();
+});
+
+// ─── Gizmo for dragging offset ───
+let gizmoActive = false;
+
+document.getElementById('set-hover-btn').addEventListener('click', () => {
+  if (selectedStepIdx < 0) return;
+  autoSave();
+  toast(`Hover position saved for ${steps[selectedStepIdx].target}`);
+});
+
+document.getElementById('reset-pos-btn').addEventListener('click', () => {
+  if (selectedStepIdx < 0) return;
+  const step = steps[selectedStepIdx];
+  step.start_offset.pos = [0, 0, 0];
+  step.start_offset.rot = [0, 0, 0];
+  updateStepEditor();
+  applyAnimationState();
+  // Re-show gizmo at the reset position
+  showGizmo();
+  toast(`Reset position for ${step.target}`);
+});
+
+// ─── Coordinate helpers (no scene mutation, no normalization) ───
+const _m3 = new THREE.Matrix3();
+const _m4inv = new THREE.Matrix4();
+
+function linkLocalToWorld(v, linkObj) {
+  _m3.setFromMatrix4(linkObj.matrixWorld);
+  return v.clone().applyMatrix3(_m3);
+}
+
+function worldToLinkLocal(v, linkObj) {
+  _m4inv.copy(linkObj.matrixWorld).invert();
+  _m3.setFromMatrix4(_m4inv);
+  return v.clone().applyMatrix3(_m3);
+}
+
+// Compute rest world position WITHOUT modifying any mesh
+function getRestWorldPos(part) {
+  if (part.type === 'mesh' && part.mesh) {
+    const orig = originalTransforms.get(part.mesh);
+    if (!orig) return null;
+    // Build the original local matrix and multiply by parent's world matrix
+    const localMat = new THREE.Matrix4().compose(orig.pos, orig.quat, part.mesh.scale);
+    const parentMat = part.mesh.parent ? part.mesh.parent.matrixWorld : robot.matrixWorld;
+    const worldMat = new THREE.Matrix4().multiplyMatrices(parentMat, localMat);
+    return new THREE.Vector3().setFromMatrixPosition(worldMat);
+  }
+  if (part.type === 'extra' && part.group) {
+    const orig = originalTransforms.get(part.group);
+    if (orig) return orig.pos.clone();
+    return part.group.position.clone();
+  }
+  if (part.type === 'screw') {
+    const si = screw3DInstances.find(s => s.annotation.name === part.name);
+    if (!si) return null;
+    const lObj = robot.frames[si.annotation.link];
+    if (lObj) {
+      const wp = si.localPos.clone().applyMatrix4(lObj.matrixWorld);
+      const wn = si.normal.clone().transformDirection(lObj.matrixWorld);
+      return wp.addScaledVector(wn, -si.depth);
+    }
+    return si.mesh.position.clone();
+  }
+  return null;
+}
+
+// ─── Gizmo ───
+let _gizmoRestWorld = new THREE.Vector3();
+let _gizmoLinkName = null;
+
+function showGizmo() {
+  gizmo.removeEventListener('objectChange', onGizmoDrag);
+  if (selectedStepIdx < 0) return;
+  const step = steps[selectedStepIdx];
+  const part = partsCatalog.find(p => p.id === step.id);
+  if (!part) return;
+
+  const isExtra = part.type === 'extra';
+  const linkObj = isExtra ? null : robot.frames[step.link];
+  if (!isExtra && !linkObj) return;
+
+  // Ensure matrices are fresh
+  robot.updateMatrixWorld(true);
+
+  const restWP = getRestWorldPos(part);
+  if (!restWP) return;
+  _gizmoRestWorld.copy(restWP);
+  _gizmoLinkName = step.link;
+  _gizmoIsExtra = isExtra;
+
+  const offsetW = isExtra
+    ? new THREE.Vector3(...step.start_offset.pos)
+    : linkLocalToWorld(new THREE.Vector3(...step.start_offset.pos), linkObj);
+  gizmoTarget.position.copy(restWP).add(offsetW);
+
+  gizmo.attach(gizmoTarget);
+  gizmo.setSpace('world');
+  gizmo.visible = true;
+  gizmo.enabled = true;
+  gizmoActive = true;
+  gizmo.addEventListener('objectChange', onGizmoDrag);
+}
+
+let _gizmoIsExtra = false;
+
+function onGizmoDrag() {
+  if (selectedStepIdx < 0 || !_gizmoLinkName) return;
+  const step = steps[selectedStepIdx];
+
+  const worldDelta = gizmoTarget.position.clone().sub(_gizmoRestWorld);
+
+  if (_gizmoIsExtra) {
+    // Extra parts: offset is world-space directly
+    step.start_offset.pos = [worldDelta.x, worldDelta.y, worldDelta.z];
+  } else {
+    const linkObj = robot.frames[_gizmoLinkName];
+    if (!linkObj) return;
+    const localDelta = worldToLinkLocal(worldDelta, linkObj);
+    step.start_offset.pos = [localDelta.x, localDelta.y, localDelta.z];
+  }
+  updateStepEditor();
+  // Don't call applyAnimationState here — render loop handles it
+}
+
+function hideGizmo() {
+  gizmo.detach();
+  gizmo.visible = false;
+  gizmo.enabled = false;
+  gizmoActive = false;
+  gizmo.removeEventListener('objectChange', onGizmoDrag);
+  _gizmoLinkName = null;
+}
+
+// ─── Animation state ───
+let currentTime = 0;
+let playing = false;
+let lastFrameTime = 0;
+let servoHuntEnabled = false;
+
+// Store original transforms for mesh parts
+const originalTransforms = new Map(); // mesh → { pos: Vector3, quat: Quaternion }
+
+function captureOriginalTransforms() {
+  robot.traverse(c => {
+    if (c.isMesh) {
+      originalTransforms.set(c, {
+        pos: c.position.clone(),
+        quat: c.quaternion.clone(),
+      });
+    }
+  });
+  // Extra GLB transforms are keyed by parent group.
+  for (const ep of extraParts) {
+    originalTransforms.set(ep.group, {
+      pos: ep.group.position.clone(),
+      quat: ep.group.quaternion.clone(),
+    });
+  }
+}
+
+function easeFunc(t, type) {
+  t = Math.max(0, Math.min(1, t));
+  switch (type) {
+    case 'ease-in': return t * t;
+    case 'ease-out': return 1 - (1 - t) * (1 - t);
+    case 'ease-in-out': return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    default: return t; // linear
+  }
+}
+
+// ─── Servo hunt: joints start displaced, sweep to rest with twitches ───
+// Maps each joint to its parent link so the joint settles as that link's parts assemble.
+const JOINT_CHOREO = {
+  shoulder_pan:   { link: 'shoulder_link',            angle:  0.4  },
+  shoulder_lift:  { link: 'upper_arm_link',           angle: -0.35 },
+  elbow_flex:     { link: 'lower_arm_link',           angle:  0.5  },
+  wrist_flex:     { link: 'wrist_link',               angle: -0.3  },
+  wrist_roll:     { link: 'gripper_link',             angle:  0.6  },
+  gripper:        { link: 'moving_jaw_so101_v1_link', angle: -0.25 },
+};
+
+/**
+ * Compute per-joint animation angle at time t.
+ * Each joint starts displaced and sweeps to 0 as its link's mesh steps complete.
+ * Includes hunt twitches and a lock-in snap.
+ */
+function computeJointAngles(t) {
+  const angles = {};
+  for (const [jointName, info] of Object.entries(JOINT_CHOREO)) {
+    // Find the time window for this link's mesh steps
+    const linkSteps = steps.filter(s =>
+      s.link === info.link && !s.id.startsWith('screw/')
+    );
+    if (linkSteps.length === 0) {
+      angles[jointName] = 0;
+      continue;
+    }
+
+    const linkStart = Math.min(...linkSteps.map(s => s.time[0]));
+    const linkEnd = Math.max(...linkSteps.map(s => s.time[1]));
+    // Joint settles over a window that starts before parts arrive and ends after
+    const settleStart = linkStart - 0.5;
+    const settleDur = (linkEnd - linkStart) + 1.5;
+
+    const raw = Math.max(0, Math.min(1, (t - settleStart) / settleDur));
+    const servoT = raw * raw * (3 - 2 * raw); // smoothstep
+
+    // Base displacement: full angle → 0
+    let baseAngle = info.angle * (1 - servoT);
+
+    // Hunt twitches: oscillations on a bell envelope (active 40-90% of settle)
+    const huntStart = 0.4;
+    const huntEnd = 0.9;
+    const huntRaw = Math.max(0, Math.min(1, (servoT - huntStart) / (huntEnd - huntStart)));
+    const huntEnv = Math.sin(huntRaw * Math.PI); // 0→1→0
+    const idx = Object.keys(JOINT_CHOREO).indexOf(jointName);
+    const tw1 = Math.sin(t * 5.5 + idx * 2.3) * 0.12 * huntEnv;
+    const tw2 = Math.sin(t * 3.1 + idx * 5.1) * 0.08 * huntEnv;
+
+    // Lock snap: overshoot then settle at the very end
+    const lockT = Math.max(0, (servoT - 0.92) / 0.08);
+    const snap = lockT > 0
+      ? Math.sin(lockT * Math.PI * 2) * 0.04 * (1 - lockT) * Math.sign(info.angle)
+      : 0;
+
+    angles[jointName] = baseAngle + tw1 + tw2 + snap;
+  }
+  return angles;
+}
+
+function applyAnimationState() {
+  if (!robot) return;
+  const t = currentTime;
+
+  // 1. Reset all robot meshes to original rest transforms
+  for (const [mesh, orig] of originalTransforms) {
+    mesh.position.copy(orig.pos);
+    mesh.quaternion.copy(orig.quat);
+  }
+
+  // Set all catalog parts invisible before applying step-specific visibility.
+  for (const part of partsCatalog) {
+    if (part.type === 'mesh' && part.mesh) {
+      part.mesh.visible = false;
+    } else if (part.type === 'screw') {
+      const si = screw3DInstances.find(s => s.annotation.name === part.name);
+      if (si) si.mesh.visible = false;
+    } else if (part.type === 'extra' && part.meshes) {
+      for (const mesh of part.meshes) mesh.visible = false;
+    }
+  }
+
+  // 1b. Servo hunt: drive joint angles during playback
+  if (servoHuntEnabled && steps.length > 0) {
+    const angles = computeJointAngles(t);
+    for (const [jointName, angle] of Object.entries(angles)) {
+      if (robot.joints[jointName]) {
+        robot.setJointValue(jointName, angle);
+        // Sync slider UI
+        const slider = document.querySelector(`input[data-joint="${jointName}"]`);
+        if (slider) slider.value = angle;
+        const valEl = document.querySelector(`[data-joint-val="${jointName}"]`);
+        if (valEl) valEl.textContent = (angle * 180 / Math.PI).toFixed(0) + '\u00B0';
+      }
+    }
+  }
+
+  // Ensure world matrices are up-to-date after reset + joint changes
+  robot.updateMatrixWorld(true);
+
+  // 2. Reset screws to fully-inserted positions
+  for (const si of screw3DInstances) {
+    const ann = si.annotation;
+    const lObj = (ann.link !== 'unknown' && robot.frames[ann.link]) ? robot.frames[ann.link] : robot;
+    const worldPos = si.localPos.clone().applyMatrix4(lObj.matrixWorld);
+    const worldNormal = si.normal.clone().transformDirection(lObj.matrixWorld);
+    si.mesh.position.copy(worldPos).addScaledVector(worldNormal, -si.depth);
+    si.mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), worldNormal.clone().negate());
+  }
+
+  // 2b. Reset extra parts to original transforms
+  for (const ep of extraParts) {
+    const orig = originalTransforms.get(ep.group);
+    if (orig) {
+      ep.group.position.copy(orig.pos);
+      ep.group.quaternion.copy(orig.quat);
+    }
+  }
+
+  // 3. Apply each step's interpolation
+  for (const step of steps) {
+    const [tStart, tEnd] = step.time;
+    const duration = tEnd - tStart;
+    if (duration <= 0) continue;
+
+    const progress = Math.max(0, Math.min(1, (t - tStart) / duration));
+    const ep = easeFunc(progress, step.easing);
+    const blend = 1 - ep; // 1 = full offset (start), 0 = at rest (end)
+
+    const offsetPos = new THREE.Vector3(...step.start_offset.pos).multiplyScalar(blend);
+    const offsetRot = new THREE.Euler(...step.start_offset.rot);
+    const offsetQuat = new THREE.Quaternion().slerp(
+      new THREE.Quaternion().setFromEuler(offsetRot), blend
+    );
+
+    const part = partsCatalog.find(p => p.id === step.id);
+    if (!part) continue;
+
+    if (part.type === 'mesh' && part.mesh) {
+      const linkObj = robot.frames[step.link];
+      if (!linkObj) continue;
+      const orig = originalTransforms.get(part.mesh);
+      if (!orig) continue;
+
+      // Convert link-local offset → world → mesh-parent space
+      const worldOff = linkLocalToWorld(offsetPos, linkObj);
+      const meshParent = part.mesh.parent;
+      const parentOff = meshParent ? worldToLinkLocal(worldOff, meshParent) : worldOff;
+
+      part.mesh.position.copy(orig.pos).add(parentOff);
+      part.mesh.quaternion.copy(new THREE.Quaternion().multiplyQuaternions(offsetQuat, orig.quat));
+
+      // Opacity: hidden before fade window, fade in, then fully visible
+      const fadeLead = step.fade_lead || 0.3;
+      const fadeStart = tStart - fadeLead;
+      if (t < fadeStart) {
+        part.mesh.visible = false;
+      } else if (t < tStart) {
+        part.mesh.visible = true;
+        part.mesh.material.transparent = true;
+        part.mesh.material.depthWrite = false;
+        part.mesh.material.opacity = (t - fadeStart) / fadeLead;
+      } else {
+        part.mesh.visible = true;
+        part.mesh.material.transparent = false;
+        part.mesh.material.depthWrite = true;
+        part.mesh.material.opacity = 1;
+      }
+    } else if (part.type === 'screw') {
+      const si = screw3DInstances.find(s => s.annotation.name === part.name);
+      if (!si) continue;
+
+      // For screws, offset is in link-local → transform to world
+      const linkObj = robot.frames[step.link] || robot;
+      const worldOffset = linkLocalToWorld(offsetPos, linkObj);
+      si.mesh.position.add(worldOffset);
+
+      // Screw threading rotation
+      if (step.screw_rotations && step.screw_rotations > 0) {
+        const threadAngle = ep * step.screw_rotations * Math.PI * 2;
+        const ann = si.annotation;
+        let worldNormal;
+        if (ann.link !== 'unknown' && robot.frames[ann.link]) {
+          worldNormal = si.normal.clone().transformDirection(robot.frames[ann.link].matrixWorld);
+        } else {
+          worldNormal = si.normal.clone().applyQuaternion(robot.quaternion);
+        }
+        const threadQuat = new THREE.Quaternion().setFromAxisAngle(worldNormal.normalize(), threadAngle);
+        si.mesh.quaternion.premultiply(threadQuat);
+      }
+
+      // Screw fade
+      const fadeLead = step.fade_lead || 0.15;
+      const fadeStart = tStart - fadeLead;
+      if (t < fadeStart) {
+        si.mesh.visible = false;
+      } else if (t < tStart) {
+        si.mesh.visible = true;
+        si.mesh.material.transparent = true;
+        si.mesh.material.opacity = (t - fadeStart) / fadeLead;
+      } else {
+        si.mesh.visible = true;
+        si.mesh.material.transparent = false;
+        si.mesh.material.opacity = 1;
+      }
+    } else if (part.type === 'extra' && part.group) {
+      // Extra GLB: animate the whole group
+      const orig = originalTransforms.get(part.group);
+      if (!orig) continue;
+
+      // World-space offset (extra parts are scene-root children)
+      part.group.position.copy(orig.pos).add(offsetPos);
+      part.group.quaternion.copy(new THREE.Quaternion().multiplyQuaternions(offsetQuat, orig.quat));
+
+      // Fade all meshes in the group
+      const fadeLead = step.fade_lead || 0.3;
+      const fadeStart = tStart - fadeLead;
+      for (const m of part.meshes) {
+        if (t < fadeStart) {
+          m.visible = false;
+        } else if (t < tStart) {
+          m.visible = true;
+          m.material.transparent = true;
+          m.material.depthWrite = false;
+          m.material.opacity = (t - fadeStart) / fadeLead;
+        } else {
+          m.visible = true;
+          m.material.transparent = false;
+          m.material.depthWrite = true;
+          m.material.opacity = 1;
+        }
+      }
+    }
+  }
+
+  document.getElementById('time-display').textContent = `${t.toFixed(2)}s`;
+}
+
+// ─── Playback ───
+document.getElementById('tl-play').addEventListener('click', () => {
+  playing = !playing;
+  document.getElementById('tl-play').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  document.getElementById('tl-play').classList.toggle('active', playing);
+  if (playing) lastFrameTime = performance.now();
+});
+
+document.getElementById('tl-start').addEventListener('click', () => {
+  currentTime = 0;
+  applyAnimationState();
+  updateTimeline();
+});
+
+document.getElementById('tl-end').addEventListener('click', () => {
+  currentTime = totalDuration;
+  applyAnimationState();
+  updateTimeline();
+});
+
+// ─── Timeline canvas (After Effects-style) ───
+const tlCanvas = document.getElementById('timeline-canvas');
+const tlCtx = tlCanvas.getContext('2d');
+let tlDragging = false;
+let tlDragMode = null; // 'scrub', 'bar-start', 'bar-end', 'bar-move', 'marquee'
+let tlDragStepIdx = -1;
+let tlDragStartX = 0;
+let tlDragStartY = 0;
+let tlDragOrigTime = [0, 0];
+let tlDragOrigTimes = new Map(); // for multi-select drag: stepIdx → [...time]
+let tlMarqueeAdditive = false; // true when Cmd/Ctrl held at marquee start
+let tlMarqueeBaseSet = new Set(); // snapshot of selection before marquee
+let tlScrollY = 0;
+let tlZoomX = 1;
+let tlScrollX = 0;
+let tlCompactMode = false;
+let tlSelectedSet = new Set(); // multi-select: set of step indices
+let tlMarquee = null; // { x0, y0, x1, y1 } in canvas coords during drag
+const TL_LABEL_W = 130;
+const TL_RULER_H = 22;
+const TL_ROW_H = 20;
+const TL_ROW_H_COMPACT = 12;
+const FADE_LEAD = 0.3; // seconds of opacity fade-in before step starts
+
+function stepPaletteColor(step) {
+  const semanticKey = step.id || step.target || '';
+  return ASSEMBLY_PALETTE[classifyPhysicalPart(semanticKey)].baseHex;
+}
+
+function resizeTimeline() {
+  const rect = tlCanvas.parentElement.getBoundingClientRect();
+  tlCanvas.width = rect.width * devicePixelRatio;
+  tlCanvas.height = rect.height * devicePixelRatio;
+  tlCanvas.style.width = rect.width + 'px';
+  tlCanvas.style.height = rect.height + 'px';
+  drawTimeline();
+}
+
+function timeToX(t) {
+  const dpr = devicePixelRatio;
+  const labelW = TL_LABEL_W * dpr;
+  const trackW = tlCanvas.width - labelW;
+  const visDur = totalDuration / tlZoomX;
+  return labelW + ((t - tlScrollX) / visDur) * trackW;
+}
+
+function xToTime(x) {
+  const dpr = devicePixelRatio;
+  const labelW = TL_LABEL_W * dpr;
+  const trackW = tlCanvas.width - labelW;
+  const visDur = totalDuration / tlZoomX;
+  return Math.max(0, Math.min(totalDuration, tlScrollX + ((x - labelW) / trackW) * visDur));
+}
+
+function snapTime(t, e) {
+  if (e && (e.metaKey || e.ctrlKey)) return t; // free drag
+  const snap = tlZoomX > 4 ? 0.25 : 0.5;
+  return Math.round(t / snap) * snap;
+}
+
+function rowH() { return (tlCompactMode ? TL_ROW_H_COMPACT : TL_ROW_H) * devicePixelRatio; }
+
+function drawTimeline() {
+  const ctx = tlCtx;
+  const w = tlCanvas.width, h = tlCanvas.height, dpr = devicePixelRatio;
+  const labelW = TL_LABEL_W * dpr;
+  const rulerH = TL_RULER_H * dpr;
+  const rh = rowH();
+  const trackW = w - labelW;
+  const topPad = 4 * dpr;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // ── Corner (top-left) ──
+  ctx.fillStyle = '#dbeaec';
+  ctx.fillRect(0, 0, labelW, rulerH);
+  ctx.fillStyle = '#49646e';
+  ctx.font = `${8 * dpr}px Inter, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.fillText('TRACKS', 6 * dpr, rulerH * 0.65);
+
+  // ── Ruler (top-right) ──
+  ctx.save();
+  ctx.beginPath(); ctx.rect(labelW, 0, trackW, rulerH); ctx.clip();
+  ctx.fillStyle = '#dbeaec';
+  ctx.fillRect(labelW, 0, trackW, rulerH);
+
+  // Grid tick marks
+  const visDur = totalDuration / tlZoomX;
+  const tickInterval = visDur > 30 ? 5 : visDur > 10 ? 2 : visDur > 4 ? 1 : 0.5;
+  const firstTick = Math.floor(tlScrollX / tickInterval) * tickInterval;
+  ctx.strokeStyle = '#b7cdd1';
+  ctx.lineWidth = 1;
+  for (let s = firstTick; s <= tlScrollX + visDur + tickInterval; s += tickInterval) {
+    const x = timeToX(s);
+    if (x < labelW || x > w) continue;
+    ctx.beginPath(); ctx.moveTo(x, rulerH * 0.5); ctx.lineTo(x, rulerH); ctx.stroke();
+    ctx.fillStyle = '#607b84';
+    ctx.font = `${8 * dpr}px Inter, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(s % 1 === 0 ? `${s}s` : s.toFixed(1), x, rulerH * 0.42);
+  }
+
+  // Playhead triangle in ruler
+  const phX = timeToX(currentTime);
+  if (phX >= labelW && phX <= w) {
+    ctx.fillStyle = '#21a9c1';
+    ctx.beginPath();
+    ctx.moveTo(phX - 5 * dpr, 0);
+    ctx.lineTo(phX + 5 * dpr, 0);
+    ctx.lineTo(phX, 7 * dpr);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // ── Label sidebar (bottom-left) ──
+  ctx.save();
+  ctx.beginPath(); ctx.rect(0, rulerH, labelW, h - rulerH); ctx.clip();
+  ctx.fillStyle = '#edf5f6';
+  ctx.fillRect(0, rulerH, labelW, h - rulerH);
+
+  for (let i = 0; i < steps.length; i++) {
+    const y = rulerH + topPad + i * rh - tlScrollY * dpr;
+    if (y + rh < rulerH || y > h) continue;
+    const step = steps[i];
+    const isSelected = i === selectedStepIdx || tlSelectedSet.has(i);
+    const color = stepPaletteColor(step);
+
+    if (isSelected) {
+      ctx.fillStyle = 'rgba(33,169,193,0.15)';
+      ctx.fillRect(0, y, labelW, rh);
+    }
+
+    // Color dot
+    ctx.fillStyle = color;
+    const dotR = (tlCompactMode ? 2.5 : 3) * dpr;
+    ctx.beginPath(); ctx.arc(8 * dpr, y + rh / 2, dotR, 0, Math.PI * 2); ctx.fill();
+
+    // Name
+    ctx.fillStyle = isSelected ? '#132d38' : '#607b84';
+    const fontSize = (tlCompactMode ? 7 : 9) * dpr;
+    ctx.font = `${fontSize}px Inter, sans-serif`;
+    ctx.textAlign = 'left';
+    const maxChars = tlCompactMode ? 16 : 18;
+    const label = step.target.length > maxChars ? step.target.slice(0, maxChars - 1) + '..' : step.target;
+    ctx.fillText(label, 16 * dpr, y + rh / 2 + fontSize * 0.35);
+  }
+
+  // Divider line
+  ctx.strokeStyle = '#b7cdd1';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(labelW - 0.5, rulerH); ctx.lineTo(labelW - 0.5, h); ctx.stroke();
+  ctx.restore();
+
+  // ── Track area (bottom-right) ──
+  ctx.save();
+  ctx.beginPath(); ctx.rect(labelW, rulerH, trackW, h - rulerH); ctx.clip();
+  ctx.fillStyle = '#e4eef0';
+  ctx.fillRect(labelW, rulerH, trackW, h - rulerH);
+
+  // Vertical grid lines
+  ctx.strokeStyle = '#c4d6d9';
+  ctx.lineWidth = 1;
+  for (let s = firstTick; s <= tlScrollX + visDur + tickInterval; s += tickInterval) {
+    const x = timeToX(s);
+    if (x < labelW || x > w) continue;
+    ctx.beginPath(); ctx.moveTo(x, rulerH); ctx.lineTo(x, h); ctx.stroke();
+  }
+
+  // Alternating row backgrounds
+  for (let i = 0; i < steps.length; i++) {
+    const y = rulerH + topPad + i * rh - tlScrollY * dpr;
+    if (y + rh < rulerH || y > h) continue;
+    if (i % 2 === 1) {
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(labelW, y, trackW, rh);
+    }
+  }
+
+  // Step bars or keyframe dots
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const x1 = timeToX(step.time[0]);
+    const x2 = timeToX(step.time[1]);
+    const y = rulerH + topPad + i * rh - tlScrollY * dpr;
+    if (y + rh < rulerH || y > h) continue;
+
+    const color = stepPaletteColor(step);
+    const isSelected = i === selectedStepIdx || tlSelectedSet.has(i);
+    const cy = y + rh / 2;
+
+    if (tlCompactMode) {
+      // Thin line
+      ctx.strokeStyle = isSelected ? color : color + '88';
+      ctx.lineWidth = (isSelected ? 2 : 1) * dpr;
+      ctx.beginPath(); ctx.moveTo(Math.max(labelW, x1), cy); ctx.lineTo(Math.min(w, x2), cy); ctx.stroke();
+
+      // Diamond keyframes at start and end
+      const dSize = (isSelected ? 4 : 3) * dpr;
+      for (const kx of [x1, x2]) {
+        if (kx < labelW || kx > w) continue;
+        ctx.save();
+        ctx.translate(kx, cy);
+        ctx.rotate(Math.PI / 4);
+        if (isSelected) {
+          ctx.fillStyle = color;
+          ctx.fillRect(-dSize / 2, -dSize / 2, dSize, dSize);
+        } else {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1 * dpr;
+          ctx.strokeRect(-dSize / 2, -dSize / 2, dSize, dSize);
+        }
+        ctx.restore();
+      }
+    } else {
+      // Full bar
+      const barH = rh - 3 * dpr;
+      const bx1 = Math.max(labelW, x1);
+      const bx2 = Math.min(w, x2);
+      if (bx2 <= bx1) continue;
+
+      ctx.fillStyle = isSelected ? color : color + '55';
+      ctx.beginPath();
+      ctx.roundRect(bx1, y + 1.5 * dpr, bx2 - bx1, barH, 2 * dpr);
+      ctx.fill();
+
+      if (isSelected) {
+        ctx.strokeStyle = '#ffffff88';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Drag handles
+      ctx.fillStyle = isSelected ? '#ffffff' : '#789099';
+      if (x1 >= labelW) ctx.fillRect(x1, y + 1.5 * dpr, 2.5 * dpr, barH);
+      if (x2 <= w) ctx.fillRect(x2 - 2.5 * dpr, y + 1.5 * dpr, 2.5 * dpr, barH);
+    }
+  }
+
+  // Playhead line
+  if (phX >= labelW && phX <= w) {
+    ctx.strokeStyle = '#21a9c1';
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath(); ctx.moveTo(phX, rulerH); ctx.lineTo(phX, h); ctx.stroke();
+  }
+
+  // Marquee selection rectangle
+  if (tlMarquee) {
+    const mx0 = Math.min(tlMarquee.x0, tlMarquee.x1);
+    const my0 = Math.min(tlMarquee.y0, tlMarquee.y1);
+    const mw = Math.abs(tlMarquee.x1 - tlMarquee.x0);
+    const mh = Math.abs(tlMarquee.y1 - tlMarquee.y0);
+    ctx.fillStyle = 'rgba(33,169,193,0.10)';
+    ctx.fillRect(mx0, my0, mw, mh);
+    ctx.strokeStyle = '#21a9c1';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4 * dpr, 3 * dpr]);
+    ctx.strokeRect(mx0, my0, mw, mh);
+    ctx.setLineDash([]);
+  }
+
+  // Vertical scroll indicator (right edge)
+  const totalContentH = steps.length * rh + topPad;
+  const viewportH = h - rulerH;
+  if (totalContentH > viewportH) {
+    const sbH = Math.max(16 * dpr, (viewportH / totalContentH) * viewportH);
+    const sbY = rulerH + (tlScrollY * dpr / totalContentH) * viewportH;
+    ctx.fillStyle = '#21596928';
+    ctx.beginPath();
+    ctx.roundRect(w - 4 * dpr, sbY, 3 * dpr, sbH, 1.5 * dpr);
+    ctx.fill();
+  }
+
+  // Horizontal scroll indicator (bottom edge, only when zoomed)
+  if (tlZoomX > 1) {
+    const sbW = Math.max(20 * dpr, trackW / tlZoomX);
+    const sbX = labelW + (tlScrollX / totalDuration) * trackW;
+    ctx.fillStyle = '#21596928';
+    ctx.beginPath();
+    ctx.roundRect(sbX, h - 4 * dpr, sbW, 3 * dpr, 1.5 * dpr);
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+function updateTimeline() { drawTimeline(); }
+
+// ── Compact / Fit buttons ──
+document.getElementById('tl-compact').addEventListener('click', function() {
+  tlCompactMode = !tlCompactMode;
+  this.classList.toggle('active', tlCompactMode);
+  tlScrollY = 0;
+  drawTimeline();
+});
+document.getElementById('tl-fit').addEventListener('click', () => {
+  tlZoomX = 1; tlScrollX = 0; tlScrollY = 0;
+  drawTimeline();
+});
+
+// ── Timeline resize handle ──
+{
+  const handle = document.getElementById('tl-resize-handle');
+  const panel = document.getElementById('timeline-panel');
+  let resizing = false, startY = 0, startH = 0;
+  handle.addEventListener('mousedown', (e) => {
+    resizing = true; startY = e.clientY;
+    startH = panel.offsetHeight;
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!resizing) return;
+    const newH = Math.max(120, Math.min(innerHeight - 100, startH - (e.clientY - startY)));
+    panel.style.height = newH + 'px';
+    document.documentElement.style.setProperty('--timeline-h', newH + 'px');
+    resizeTimeline();
+  });
+  window.addEventListener('mouseup', () => { resizing = false; });
+}
+
+// ── Scroll + Zoom ──
+// Capture scrolling across the full timeline panel.
+document.getElementById('timeline-panel').addEventListener('wheel', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (e.altKey) {
+    // Alt+scroll = zoom horizontal
+    const factor = e.deltaY > 0 ? 0.85 : 1.18;
+    tlZoomX = Math.max(1, Math.min(30, tlZoomX * factor));
+    const rect = tlCanvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * devicePixelRatio;
+    const mouseT = xToTime(mx);
+    const visDur = totalDuration / tlZoomX;
+    const labelW = TL_LABEL_W * devicePixelRatio;
+    const trackW = tlCanvas.width - labelW;
+    tlScrollX = mouseT - ((mx - labelW) / trackW) * visDur;
+    tlScrollX = Math.max(0, Math.min(totalDuration - visDur, tlScrollX));
+  } else {
+    // Two-axis scroll: deltaY = vertical, deltaX = horizontal pan
+    // Shift+scroll also pans horizontally
+    const rh = tlCompactMode ? TL_ROW_H_COMPACT : TL_ROW_H;
+    const maxSY = Math.max(0, steps.length * rh - (tlCanvas.height / devicePixelRatio - TL_RULER_H - 8));
+
+    const hDelta = e.shiftKey ? e.deltaY : e.deltaX;
+    const vDelta = e.shiftKey ? 0 : e.deltaY;
+
+    if (Math.abs(hDelta) > 0 && tlZoomX > 1) {
+      const visDur = totalDuration / tlZoomX;
+      tlScrollX = Math.max(0, Math.min(totalDuration - visDur, tlScrollX + hDelta * 0.005));
+    }
+    if (Math.abs(vDelta) > 0) {
+      tlScrollY = Math.max(0, Math.min(maxSY, tlScrollY + vDelta * 0.4));
+    }
+  }
+  drawTimeline();
+}, { passive: false });
+
+// ── Cursor hint on hover ──
+tlCanvas.addEventListener('mousemove', (e) => {
+  if (tlDragging) return;
+  const rect = tlCanvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * devicePixelRatio;
+  const y = (e.clientY - rect.top) * devicePixelRatio;
+  const dpr = devicePixelRatio;
+  const labelW = TL_LABEL_W * dpr;
+  const rulerH = TL_RULER_H * dpr;
+  const rh = rowH();
+  const topPad = 4 * dpr;
+
+  if (y < rulerH || x < labelW) { tlCanvas.style.cursor = 'default'; return; }
+
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const x1 = timeToX(step.time[0]);
+    const x2 = timeToX(step.time[1]);
+    const barY = rulerH + topPad + i * rh - tlScrollY * dpr;
+    if (y >= barY && y <= barY + rh) {
+      if (Math.abs(x - x1) < 8 * dpr || Math.abs(x - x2) < 8 * dpr) {
+        tlCanvas.style.cursor = 'ew-resize'; return;
+      }
+      if (x >= x1 && x <= x2) {
+        tlCanvas.style.cursor = 'grab'; return;
+      }
+    }
+  }
+  tlCanvas.style.cursor = 'crosshair';
+});
+
+// ── Mouse interaction ──
+let _tlLastMouseEvent = null;
+
+tlCanvas.addEventListener('mousedown', (e) => {
+  const rect = tlCanvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * devicePixelRatio;
+  const y = (e.clientY - rect.top) * devicePixelRatio;
+  const dpr = devicePixelRatio;
+  const labelW = TL_LABEL_W * dpr;
+  const rulerH = TL_RULER_H * dpr;
+  const rh = rowH();
+  const topPad = 4 * dpr;
+
+  tlDragging = true;
+  tlDragStartX = x;
+  tlDragStartY = y;
+  _tlLastMouseEvent = e;
+  const isMulti = e.metaKey || e.ctrlKey;
+  const isShift = e.shiftKey;
+
+  // Click in ruler → scrub
+  if (y < rulerH && x >= labelW) {
+    tlDragMode = 'scrub';
+    currentTime = xToTime(x);
+    applyAnimationState();
+    updateTimeline();
+    return;
+  }
+
+  // Click in label sidebar → select/multi-select step
+  if (x < labelW && y >= rulerH) {
+    const row = Math.floor((y - rulerH - topPad + tlScrollY * dpr) / rh);
+    if (row >= 0 && row < steps.length) {
+      if (isShift) {
+        const anchor = selectedStepIdx >= 0 ? selectedStepIdx : 0;
+        const lo = Math.min(anchor, row), hi = Math.max(anchor, row);
+        for (let r = lo; r <= hi; r++) tlSelectedSet.add(r);
+        selectedStepIdx = row; selectedPart = partsCatalog.find(p => p.id === steps[row].id) || null;
+        updatePartsUI(); updateStepEditor(); updateOutlines(); updateTimeline();
+      } else if (isMulti) {
+        if (tlSelectedSet.has(row)) tlSelectedSet.delete(row); else tlSelectedSet.add(row);
+        selectedStepIdx = row; selectedPart = partsCatalog.find(p => p.id === steps[row].id) || null;
+        updatePartsUI(); updateStepEditor(); updateOutlines(); updateTimeline();
+      } else {
+        tlSelectedSet.clear();
+        selectStep(row);
+      }
+    } else if (!isMulti && !isShift) {
+      tlSelectedSet.clear();
+      selectStep(-1);
+    }
+    tlDragging = false;
+    return;
+  }
+
+  // Click in track area → check bar handles/body
+  if (x >= labelW && y >= rulerH) {
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      const x1 = timeToX(step.time[0]);
+      const x2 = timeToX(step.time[1]);
+      const barY = rulerH + topPad + i * rh - tlScrollY * dpr;
+
+      if (y >= barY && y <= barY + rh) {
+        if (Math.abs(x - x1) < 8 * dpr) {
+          tlDragMode = 'bar-start'; tlDragStepIdx = i; tlDragOrigTime = [...step.time];
+          if (!isMulti) { tlSelectedSet.clear(); }
+          selectStep(i); tlCanvas.style.cursor = 'ew-resize'; return;
+        }
+        if (Math.abs(x - x2) < 8 * dpr) {
+          tlDragMode = 'bar-end'; tlDragStepIdx = i; tlDragOrigTime = [...step.time];
+          if (!isMulti) { tlSelectedSet.clear(); }
+          selectStep(i); tlCanvas.style.cursor = 'ew-resize'; return;
+        }
+        if (x >= x1 && x <= x2) {
+          // If clicking an already-selected bar in multi-mode, move ALL selected
+          if (isMulti) {
+            if (tlSelectedSet.has(i)) { /* keep selection */ } else tlSelectedSet.add(i);
+          } else if (!tlSelectedSet.has(i)) {
+            tlSelectedSet.clear();
+          }
+          tlSelectedSet.add(i);
+          tlDragMode = 'bar-move'; tlDragStepIdx = i; tlDragOrigTime = [...step.time];
+          // Capture all selected bars' original times for multi-drag
+          tlDragOrigTimes.clear();
+          for (const si of tlSelectedSet) {
+            tlDragOrigTimes.set(si, [...steps[si].time]);
+          }
+          selectStep(i); tlCanvas.style.cursor = 'grabbing'; return;
+        }
+      }
+    }
+    // Empty track area → always marquee (scrub is ruler-only)
+    tlMarqueeAdditive = isMulti;
+    if (!isMulti) tlSelectedSet.clear();
+    tlMarqueeBaseSet = new Set(tlSelectedSet);
+    tlDragMode = 'marquee';
+    tlMarquee = { x0: x, y0: y, x1: x, y1: y };
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!tlDragging) return;
+  _tlLastMouseEvent = e;
+  const rect = tlCanvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * devicePixelRatio;
+  const y = (e.clientY - rect.top) * devicePixelRatio;
+
+  if (tlDragMode === 'scrub') {
+    currentTime = xToTime(x);
+    applyAnimationState();
+    updateTimeline();
+  } else if (tlDragMode === 'bar-start') {
+    const step = steps[tlDragStepIdx];
+    const t = snapTime(xToTime(x), e);
+    step.time[0] = Math.max(0, Math.min(step.time[1] - 0.1, t));
+    updateStepEditor(); updateTimeline();
+  } else if (tlDragMode === 'bar-end') {
+    const step = steps[tlDragStepIdx];
+    const t = snapTime(xToTime(x), e);
+    step.time[1] = Math.max(step.time[0] + 0.1, Math.min(totalDuration, t));
+    updateStepEditor(); updateTimeline();
+  } else if (tlDragMode === 'bar-move') {
+    // Multi-drag: move all selected bars by the same time delta
+    const labelW = TL_LABEL_W * devicePixelRatio;
+    const dx = x - tlDragStartX;
+    const visDur = totalDuration / tlZoomX;
+    const trackW = tlCanvas.width - labelW;
+    const dt = (dx / trackW) * visDur;
+
+    for (const si of tlSelectedSet) {
+      const orig = tlDragOrigTimes.get(si);
+      if (!orig) continue;
+      const dur = orig[1] - orig[0];
+      let ns = snapTime(orig[0] + dt, e);
+      ns = Math.max(0, Math.min(totalDuration - dur, ns));
+      steps[si].time[0] = ns;
+      steps[si].time[1] = ns + dur;
+    }
+    updateStepEditor(); updateTimeline();
+  } else if (tlDragMode === 'marquee') {
+    tlMarquee.x1 = x;
+    tlMarquee.y1 = y;
+    // Select steps whose bars intersect the marquee
+    const dpr = devicePixelRatio;
+    const rulerH = TL_RULER_H * dpr;
+    const rh = rowH();
+    const topPad = 4 * dpr;
+    const mx0 = Math.min(tlMarquee.x0, tlMarquee.x1);
+    const mx1 = Math.max(tlMarquee.x0, tlMarquee.x1);
+    const my0 = Math.min(tlMarquee.y0, tlMarquee.y1);
+    const my1 = Math.max(tlMarquee.y0, tlMarquee.y1);
+
+    // Restore base set (additive) or start fresh
+    tlSelectedSet.clear();
+    if (tlMarqueeAdditive) {
+      for (const s of tlMarqueeBaseSet) tlSelectedSet.add(s);
+    }
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      const x1 = timeToX(step.time[0]);
+      const x2 = timeToX(step.time[1]);
+      const barY = rulerH + topPad + i * rh - tlScrollY * dpr;
+      // Box intersection
+      if (x2 >= mx0 && x1 <= mx1 && barY + rh >= my0 && barY <= my1) {
+        tlSelectedSet.add(i);
+      }
+    }
+    drawTimeline();
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  if (tlDragMode === 'marquee') {
+    // A marquee shorter than five pixels acts as a click.
+    const dx = Math.abs(tlMarquee.x1 - tlMarquee.x0);
+    const dy = Math.abs(tlMarquee.y1 - tlMarquee.y0);
+    if (dx < 5 && dy < 5) {
+      const dpr = devicePixelRatio;
+      const rulerH = TL_RULER_H * dpr;
+      const rh = rowH();
+      const topPad = 4 * dpr;
+      const clickY = tlMarquee.y0;
+      const row = Math.floor((clickY - rulerH - topPad + tlScrollY * dpr) / rh);
+      if (row >= 0 && row < steps.length) {
+        tlSelectedSet.clear();
+        selectStep(row);
+      } else {
+        tlSelectedSet.clear();
+        selectStep(-1);
+      }
+    }
+    tlMarquee = null;
+  }
+  if (tlDragMode === 'bar-move') tlCanvas.style.cursor = 'grab';
+  tlDragging = false;
+  tlDragMode = null;
+  drawTimeline();
+});
+
+// ─── Timeline context menu ───
+const ctxMenu = document.getElementById('tl-context-menu');
+let ctxStepIdx = -1;
+
+function hideCtxMenu() { ctxMenu.style.display = 'none'; }
+window.addEventListener('click', hideCtxMenu);
+window.addEventListener('contextmenu', (e) => {
+  if (e.target === tlCanvas) e.preventDefault();
+});
+
+tlCanvas.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const rect = tlCanvas.getBoundingClientRect();
+  const y = (e.clientY - rect.top) * devicePixelRatio;
+  const dpr = devicePixelRatio;
+  const rulerH = TL_RULER_H * dpr;
+  const rh = rowH();
+  const topPad = 4 * dpr;
+
+  // Find which row was right-clicked
+  const row = Math.floor((y - rulerH - topPad + tlScrollY * dpr) / rh);
+  if (row < 0 || row >= steps.length) { hideCtxMenu(); return; }
+
+  ctxStepIdx = row;
+  selectStep(row);
+  ctxMenu.style.display = '';
+  ctxMenu.style.left = e.clientX + 'px';
+  ctxMenu.style.top = e.clientY + 'px';
+  // Keep menu on screen
+  requestAnimationFrame(() => {
+    const mr = ctxMenu.getBoundingClientRect();
+    if (mr.right > innerWidth) ctxMenu.style.left = (innerWidth - mr.width - 4) + 'px';
+    if (mr.bottom > innerHeight) ctxMenu.style.top = (innerHeight - mr.height - 4) + 'px';
+  });
+});
+
+ctxMenu.querySelectorAll('.ctx-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    hideCtxMenu();
+    const i = ctxStepIdx;
+    if (i < 0 || i >= steps.length) return;
+
+    switch (btn.dataset.act) {
+      case 'delete':
+        removeStep(i);
+        toast('Track deleted');
+        break;
+      case 'move-up':
+        if (i > 0) {
+          [steps[i - 1], steps[i]] = [steps[i], steps[i - 1]];
+          selectStep(i - 1);
+          updateTimeline();
+          toast('Moved up');
+        }
+        break;
+      case 'move-down':
+        if (i < steps.length - 1) {
+          [steps[i], steps[i + 1]] = [steps[i + 1], steps[i]];
+          selectStep(i + 1);
+          updateTimeline();
+          toast('Moved down');
+        }
+        break;
+      case 'duplicate': {
+        const clone = JSON.parse(JSON.stringify(steps[i]));
+        clone.id = clone.id + '_copy';
+        clone.time = [clone.time[1], clone.time[1] + (clone.time[1] - clone.time[0])];
+        steps.splice(i + 1, 0, clone);
+        selectStep(i + 1);
+        updatePartsUI();
+        updateTimeline();
+        toast('Duplicated');
+        break;
+      }
+      case 'insert-above': {
+        const t = steps[i].time[0];
+        steps.splice(i, 0, {
+          id: `empty_${Date.now()}`, target: 'empty', link: steps[i].link,
+          start_offset: { pos: [0, 0, 0], rot: [0, 0, 0] },
+          time: [Math.max(0, t - 1), t], easing: 'ease-in-out',
+        });
+        selectStep(i);
+        updatePartsUI();
+        updateTimeline();
+        toast('Inserted above');
+        break;
+      }
+      case 'insert-below': {
+        const t = steps[i].time[1];
+        steps.splice(i + 1, 0, {
+          id: `empty_${Date.now()}`, target: 'empty', link: steps[i].link,
+          start_offset: { pos: [0, 0, 0], rot: [0, 0, 0] },
+          time: [t, t + 1], easing: 'ease-in-out',
+        });
+        selectStep(i + 1);
+        updatePartsUI();
+        updateTimeline();
+        toast('Inserted below');
+        break;
+      }
+    }
+    autoSave();
+  });
+});
+
+// ─── Joint sliders ───
+function buildJointSliders() {
+  const container = document.getElementById('joints-container');
+  if (!robot || !robot.joints) return;
+
+  const jointNames = ['shoulder_pan', 'shoulder_lift', 'elbow_flex', 'wrist_flex', 'wrist_roll', 'gripper'];
+  let html = '';
+  for (const jn of jointNames) {
+    const j = robot.joints[jn];
+    if (!j) continue;
+    const min = j.limit?.lower ?? -Math.PI;
+    const max = j.limit?.upper ?? Math.PI;
+    html += `<div class="joint-row">
+      <label>${jn}</label>
+      <input type="range" min="${min}" max="${max}" step="0.01" value="0" data-joint="${jn}">
+      <span class="joint-val" data-joint-val="${jn}">0</span>
+    </div>`;
+  }
+  container.innerHTML = html;
+
+  container.querySelectorAll('input[type=range]').forEach(slider => {
+    slider.addEventListener('input', () => {
+      const jn = slider.dataset.joint;
+      const val = parseFloat(slider.value);
+      robot.setJointValue(jn, val);
+      robot.updateMatrixWorld(true);
+      container.querySelector(`[data-joint-val="${jn}"]`).textContent = (val * 180 / Math.PI).toFixed(0) + '\u00B0';
+      captureOriginalTransforms();
+      spawnScrews();
+      applyAnimationState();
+    });
+  });
+}
+
+// ─── Auto-sequence ───
+document.getElementById('auto-sequence-btn').addEventListener('click', () => {
+  if (partsCatalog.length === 0) { toast('No parts loaded'); return; }
+
+  // Clear existing steps
+  steps = [];
+  selectedStepIdx = -1;
+
+  // Assign meshes by link from the base upward, followed by screws.
+  // Overlapping start times produce progressive opacity transitions in the GLB.
+  const linkOrder = ['base_link', 'shoulder_link', 'upper_arm_link', 'lower_arm_link', 'wrist_link', 'gripper_link'];
+  let t = 0;
+  const meshDuration = 1.8;        // how long each mesh animates into place
+  const screwDuration = 0.9;
+  const meshStep   = 0.55;          // time between successive mesh starts (≈ 70% overlap)
+  const screwStep  = 0.22;          // time between successive screw starts
+  const linkGap    = 0.4;           // extra pause between links for readability
+  const meshFadeLead  = 0.6;        // smooth scale-in window before tStart
+  const screwFadeLead = 0.25;
+
+  for (const link of linkOrder) {
+    let lastStart = t;
+    const meshParts = partsCatalog.filter(p => p.type === 'mesh' && p.link === link);
+    for (const p of meshParts) {
+      steps.push({
+        id: p.id,
+        target: p.name,
+        link: p.link,
+        start_offset: { pos: [0, 0, 0], rot: [0, 0, 0] },
+        time: [t, t + meshDuration],
+        easing: 'ease-in-out',
+        fade_lead: meshFadeLead,
+      });
+      lastStart = t;
+      t += meshStep;
+    }
+    // Advance past the last mesh's animation before starting screws
+    t = Math.max(t, lastStart + meshDuration * 0.7);
+
+    const screwParts = partsCatalog.filter(p => p.type === 'screw' && p.link === link);
+    for (const p of screwParts) {
+      steps.push({
+        id: p.id,
+        target: p.name,
+        link: p.link,
+        start_offset: { pos: [0, 0.02, 0], rot: [0, 0, 0] },
+        time: [t, t + screwDuration],
+        screw_rotations: 10,
+        easing: 'ease-in-out',
+        fade_lead: screwFadeLead,
+      });
+      lastStart = t;
+      t += screwStep;
+    }
+    t = Math.max(t, lastStart + screwDuration) + linkGap;
+  }
+
+  totalDuration = Math.ceil(t + 2);
+  document.getElementById('total-duration').value = totalDuration;
+  updatePartsUI();
+  updateTimeline();
+  applyAnimationState();
+  toast(`Generated ${steps.length} steps over ${totalDuration}s`);
+});
+
+// ─── View toggles ───
+document.getElementById('toggle-servo-hunt').addEventListener('click', function() {
+  servoHuntEnabled = !servoHuntEnabled;
+  this.classList.toggle('active', servoHuntEnabled);
+  // Reset joints to 0 when turning off
+  if (!servoHuntEnabled && robot) {
+    for (const jn of Object.keys(JOINT_CHOREO)) {
+      if (robot.joints[jn]) robot.setJointValue(jn, 0);
+    }
+    robot.updateMatrixWorld(true);
+  }
+  applyAnimationState();
+  toast(servoHuntEnabled ? 'Servo hunt ON' : 'Servo hunt OFF');
+});
+
+document.getElementById('toggle-wireframe').addEventListener('click', function() {
+  const on = !this.classList.contains('active');
+  this.classList.toggle('active', on);
+  if (robot) robot.traverse(c => { if (c.isMesh && c.material) c.material.wireframe = on; });
+});
+
+document.getElementById('toggle-xray').addEventListener('click', function() {
+  const on = !this.classList.contains('active');
+  this.classList.toggle('active', on);
+  if (robot) robot.traverse(c => {
+    if (c.isMesh && c.material) { c.material.transparent = true; c.material.opacity = on ? 0.3 : 1.0; }
+  });
+});
+
+document.getElementById('toggle-grid').addEventListener('click', function() {
+  grid.visible = !grid.visible;
+  this.classList.toggle('active', grid.visible);
+});
+
+document.getElementById('toggle-shadows').addEventListener('click', function() {
+  const on = !renderer.shadowMap.enabled;
+  renderer.shadowMap.enabled = on;
+  this.classList.toggle('active', on);
+  // Force shadow map update
+  if (robot) robot.traverse(c => { if (c.isMesh) c.material.needsUpdate = true; });
+  floor.material.needsUpdate = true;
+});
+
+// ─── Catalogue mode ───
+let catalogueMode = false;
+let catalogueTargets = new Map();  // mesh → { pos: Vector3 }
+let catalogueTween = 0;           // 0 = assembled, 1 = exploded
+let catalogueLabels = [];         // CSS2DObject instances
+let labelRenderer = null;
+
+const LINK_ORDER = ['base_link', 'shoulder_link', 'upper_arm_link', 'lower_arm_link', 'wrist_link', 'gripper_link', 'moving_jaw_so101_v1_link'];
+const LINK_DISPLAY = {
+  'base_link': 'Base',
+  'shoulder_link': 'Shoulder',
+  'upper_arm_link': 'Upper Arm',
+  'lower_arm_link': 'Forearm',
+  'wrist_link': 'Wrist',
+  'gripper_link': 'Gripper',
+  'moving_jaw_so101_v1_link': 'Jaw',
+};
+
+function initLabelRenderer() {
+  if (labelRenderer) return;
+  labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0';
+  labelRenderer.domElement.style.left = '0';
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  document.body.appendChild(labelRenderer.domElement);
+  window.addEventListener('resize', () => {
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
+function computeCatalogueLayout() {
+  catalogueTargets.clear();
+  if (!robot) return;
+
+  const spacing = 0.08;
+  const linkGap = 0.12;
+  let groupX = 0;
+
+  for (const linkName of LINK_ORDER) {
+    const meshList = linkMeshes.get(linkName);
+    if (!meshList) continue;
+
+    let partIdx = 0;
+    for (const entry of meshList) {
+      const mesh = entry.mesh;
+      if (!mesh) continue;
+
+      const box = new THREE.Box3().setFromObject(mesh);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+
+      const targetWorld = new THREE.Vector3(
+        groupX + partIdx * spacing,
+        size.y * 0.5 + 0.01,
+        0
+      );
+
+      catalogueTargets.set(mesh, { pos: targetWorld });
+      partIdx++;
+    }
+
+    groupX += Math.max(partIdx, 1) * spacing + linkGap;
+  }
+}
+
+function createCatalogueLabels() {
+  clearCatalogueLabels();
+  initLabelRenderer();
+  if (!robot) return;
+
+  let groupX = 0;
+  const spacing = 0.08;
+  const linkGap = 0.12;
+
+  for (const linkName of LINK_ORDER) {
+    const meshList = linkMeshes.get(linkName);
+    if (!meshList || meshList.length === 0) continue;
+
+    const displayName = LINK_DISPLAY[linkName] || linkName;
+    const groupLabel = document.createElement('div');
+    groupLabel.className = 'cat-label cat-group-label';
+    groupLabel.textContent = displayName;
+    const groupObj = new CSS2DObject(groupLabel);
+    groupObj.position.set(groupX + (meshList.length - 1) * spacing * 0.5, -0.02, 0);
+    scene.add(groupObj);
+    catalogueLabels.push(groupObj);
+
+    let partIdx = 0;
+    for (const entry of meshList) {
+      const mesh = entry.mesh;
+      if (!mesh) continue;
+
+      const partName = entry.filename
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+
+      const label = document.createElement('div');
+      label.className = 'cat-label';
+      label.innerHTML = partName + '<span class="cat-sub">' + displayName + ' #' + (partIdx + 1) + '</span>';
+      const labelObj = new CSS2DObject(label);
+
+      const target = catalogueTargets.get(mesh);
+      if (target) {
+        const box = new THREE.Box3().setFromObject(mesh);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        labelObj.position.copy(target.pos).add(new THREE.Vector3(0, size.y * 0.5 + 0.02, 0));
+      }
+      scene.add(labelObj);
+      catalogueLabels.push(labelObj);
+      partIdx++;
+    }
+
+    groupX += Math.max(meshList.length, 1) * spacing + linkGap;
+  }
+}
+
+function clearCatalogueLabels() {
+  for (const obj of catalogueLabels) {
+    scene.remove(obj);
+    if (obj.element && obj.element.parentNode) obj.element.parentNode.removeChild(obj.element);
+  }
+  catalogueLabels = [];
+}
+
+function applyCatalogueTween(blend) {
+  if (!robot || catalogueTargets.size === 0) return;
+
+  for (const [mesh, target] of catalogueTargets) {
+    const orig = originalTransforms.get(mesh);
+    if (!orig) continue;
+
+    const worldOrig = new THREE.Vector3();
+    mesh.parent.updateWorldMatrix(true, false);
+    worldOrig.copy(orig.pos);
+    mesh.parent.localToWorld(worldOrig);
+
+    const worldTarget = target.pos;
+    const blended = new THREE.Vector3().lerpVectors(worldOrig, worldTarget, blend);
+
+    const localPos = blended.clone();
+    mesh.parent.worldToLocal(localPos);
+    mesh.position.copy(localPos);
+
+    mesh.quaternion.copy(orig.quat);
+  }
+}
+
+function toggleCatalogue() {
+  catalogueMode = !catalogueMode;
+  document.getElementById('toggle-catalogue').classList.toggle('active', catalogueMode);
+
+  if (catalogueMode) {
+    playing = false;
+    computeCatalogueLayout();
+    createCatalogueLabels();
+    for (const si of screw3DInstances) si.mesh.visible = false;
+    toast('Catalogue mode — parts laid out by group');
+  } else {
+    clearCatalogueLabels();
+    catalogueTween = 0;
+    for (const si of screw3DInstances) si.mesh.visible = true;
+    applyAnimationState();
+    toast('Catalogue mode off');
+  }
+}
+
+document.getElementById('toggle-catalogue').addEventListener('click', toggleCatalogue);
+
+// ─── Background color picker (setBackground from studio-scene module) ───
+document.querySelectorAll('.bg-swatch').forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    setBackground(swatch.dataset.bg);
+    swatch.classList.add('active');
+    document.getElementById('bg-custom').value = swatch.dataset.bg;
+  });
+});
+
+document.getElementById('bg-custom').addEventListener('input', (e) => {
+  setBackground(e.target.value);
+});
+
+// ─── Export / Load ───
+document.getElementById('export-seq-btn').addEventListener('click', () => {
+  const data = {
+    duration: totalDuration,
+    steps: steps.map(s => {
+      const out = {
+        id: s.id,
+        target: s.target,
+        link: s.link,
+        start_offset: {
+          pos: s.start_offset.pos.map(v => Math.round(v * 1000000) / 1000000),
+          rot: s.start_offset.rot.map(v => Math.round(v * 1000000) / 1000000),
+        },
+        time: s.time.map(v => Math.round(v * 100) / 100),
+        easing: s.easing,
+      };
+      if (s.screw_rotations) out.screw_rotations = s.screw_rotations;
+      if (s.fade_lead != null) out.fade_lead = s.fade_lead;
+      if (s.chapter) out.chapter = s.chapter;
+      return out;
+    }),
+  };
+  const json = JSON.stringify(data, null, 2);
+  navigator.clipboard.writeText(json).then(() => toast('Copied to clipboard')).catch(() => {});
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'assembly_sequence.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast(`Exported ${steps.length} steps`);
+});
+
+// ─── Export GLB ───
+document.getElementById('export-glb-btn').addEventListener('click', async () => {
+  if (steps.length === 0) { toast('No steps to export'); return; }
+  try {
+    toast('Baking animation...');
+    robot.updateMatrixWorld(true);
+    const glb = await exportAssemblyGLB(
+      robot, steps, totalDuration,
+      originalTransforms, screw3DInstances, partsCatalog,
+      linkLocalToWorld, worldToLinkLocal
+    );
+    const blob = new Blob([glb], { type: 'model/gltf-binary' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'assembly_animation.glb'; a.click();
+    URL.revokeObjectURL(url);
+    toast(`Exported GLB (${steps.length} tracks)`);
+  } catch (err) {
+    console.error('GLB export failed:', err);
+    toast('GLB export failed: ' + err.message);
+  }
+});
+
+// ─── Export LS Config ───
+document.getElementById('export-ls-btn').addEventListener('click', () => {
+  if (steps.length === 0) { toast('No steps to export'); return; }
+  const config = generateLSConfig(steps, totalDuration);
+  const json = JSON.stringify(config, null, 2);
+  navigator.clipboard.writeText(json).then(() => toast('LS config copied')).catch(() => {});
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'assembly-mech-config.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast(`Exported LS config (${config.mechanical_steps.length} steps)`);
+});
+
+document.getElementById('load-seq-btn').addEventListener('click', () => document.getElementById('load-seq-file').click());
+document.getElementById('load-seq-file').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      steps = (data.steps || []).map(s => {
+        if (s.fade_lead == null) s.fade_lead = s.id?.startsWith('screw/') ? 0.15 : 0.3;
+        return s;
+      });
+      totalDuration = data.duration || 30;
+      document.getElementById('total-duration').value = totalDuration;
+      selectedStepIdx = -1;
+      updatePartsUI();
+      updateStepEditor();
+      updateTimeline();
+      applyAnimationState();
+      toast(`Loaded ${steps.length} steps`);
+    } catch (err) { toast('Error parsing JSON'); console.error(err); }
+  };
+  reader.readAsText(file);
+});
+
+// ─── Reset ───
+document.getElementById('save-btn').addEventListener('click', manualSave);
+
+document.getElementById('reset-all-btn').addEventListener('click', () => {
+  if (!confirm('Clear all steps and reset localStorage?')) return;
+  steps = [];
+  selectedStepIdx = -1;
+  selectedPart = null;
+  localStorage.removeItem(SEQUENCE_STORAGE_KEY);
+  // Remove the legacy unversioned value so it cannot reintroduce offsets if
+  // this page is opened from an older build.
+  localStorage.removeItem('assembly_sequence');
+  hideGizmo();
+  updatePartsUI();
+  updateStepEditor();
+  updateOutlines();
+  updateTimeline();
+  applyAnimationState();
+  toast('Reset complete');
+});
+
+// ─── Keyboard ───
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault();
+    manualSave();
+    return;
+  }
+  if (e.key === ' ') {
+    e.preventDefault();
+    document.getElementById('tl-play').click();
+  }
+  if (e.key === 'Escape') {
+    selectStep(-1);
+    hideGizmo();
+  }
+  if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (selectedStepIdx >= 0) removeStep(selectedStepIdx);
+  }
+  if (e.key === 'Home') {
+    currentTime = 0; applyAnimationState(); updateTimeline();
+  }
+  if (e.key === 'End') {
+    currentTime = totalDuration; applyAnimationState(); updateTimeline();
+  }
+  // J/K/L shuttle (After Effects)
+  if (e.key === 'j') {
+    currentTime = Math.max(0, currentTime - 0.1); applyAnimationState(); updateTimeline();
+  }
+  if (e.key === 'k') {
+    if (playing) document.getElementById('tl-play').click();
+  }
+  if (e.key === 'l') {
+    currentTime = Math.min(totalDuration, currentTime + 0.1); applyAnimationState(); updateTimeline();
+  }
+  // Zoom
+  if (e.key === '=' || e.key === '+') {
+    tlZoomX = Math.min(30, tlZoomX * 1.3); drawTimeline();
+  }
+  if (e.key === '-') {
+    tlZoomX = Math.max(1, tlZoomX / 1.3); drawTimeline();
+  }
+  if (e.key === '0' && !e.metaKey && !e.ctrlKey) {
+    tlZoomX = 1; tlScrollX = 0; tlScrollY = 0; drawTimeline();
+  }
+});
+
+// ─── Init ───
+async function init() {
+  try {
+    robot = await loadURDF();
+    robot.rotation.x = -Math.PI / 2;
+    scene.add(robot);
+    robot.updateMatrixWorld(true);
+
+    // Wait for STL meshes to finish loading (SO-101 has ~17 mesh files)
+    const meshCount = await waitForMeshes(robot, 14, 20000);
+    robot.updateMatrixWorld(true);
+    buildMeshToLinkMap(robot);
+
+    // Rebuild again after a delay to catch any late-loading meshes
+    setTimeout(() => {
+      let mc = 0;
+      robot.traverse(c => { if (c.isMesh) mc++; });
+      if (mc > meshCount) {
+        console.log(`[init] Late meshes detected (${mc} vs ${meshCount}), rebuilding...`);
+        meshToLink.clear();
+        linkMeshes.clear();
+        buildMeshToLinkMap(robot);
+        captureOriginalTransforms();
+        buildPartsCatalog();
+        updatePartsUI();
+      }
+    }, 5000);
+
+    const defaults = { shoulder_pan: 0, shoulder_lift: 0, elbow_flex: 0, wrist_flex: 0, wrist_roll: 0, gripper: 0.5 };
+    for (const [j, v] of Object.entries(defaults)) {
+      if (robot.joints[j]) robot.setJointValue(j, v);
+    }
+    robot.updateMatrixWorld(true);
+
+    await loadExtraGLBs();
+    captureOriginalTransforms();
+    await loadScrewGLB();
+    await loadAnnotations();
+    spawnScrews();
+
+    buildPartsCatalog();
+
+    updatePartsUI();
+    buildJointSliders();
+
+    // Load only saved data authored against the current sequence schema.
+    // Older unversioned data targeted a different URDF/catalog and can leave
+    // parts at unrelated transforms, so the canonical sequence is safer.
+    try {
+      const saved = localStorage.getItem(SEQUENCE_STORAGE_KEY);
+      let data;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.schema_version === SEQUENCE_SCHEMA_VERSION && parsed.steps?.length > 0) {
+          data = parsed;
+          toast(`Restored ${data.steps.length} steps`);
+        }
+      }
+      if (!data) {
+        const resp = await fetch('./default-sequence.json');
+        if (resp.ok) {
+          data = await resp.json();
+          toast(`Loaded default: ${data.steps?.length || 0} steps`);
+        }
+      }
+      if (data) {
+        steps = (data.steps || []).map(s => {
+          if (s.fade_lead == null) s.fade_lead = s.id?.startsWith('screw/') ? 0.15 : 0.3;
+          return s;
+        });
+        totalDuration = data.duration || 26;
+        document.getElementById('total-duration').value = totalDuration;
+        updatePartsUI();
+      }
+    } catch (e) { console.warn('[init] sequence load error:', e); }
+
+    resizeTimeline();
+    applyAnimationState();
+    toast(`Loaded: ${partsCatalog.length} parts, ${screwAnnotations.length} screws`);
+  } catch (e) {
+    console.error('Init error:', e);
+  }
+}
+
+// Auto-save to localStorage on changes
+function autoSave() {
+  const data = {
+    schema_version: SEQUENCE_SCHEMA_VERSION,
+    model: 'so101_new_calib',
+    duration: totalDuration,
+    steps: steps.map(s => ({
+      id: s.id, target: s.target, link: s.link,
+      start_offset: s.start_offset, time: s.time, easing: s.easing,
+      screw_rotations: s.screw_rotations,
+      fade_lead: s.fade_lead,
+      chapter: s.chapter,
+    })),
+  };
+  localStorage.setItem(SEQUENCE_STORAGE_KEY, JSON.stringify(data));
+}
+
+function manualSave() {
+  autoSave();
+  toast('Saved to localStorage');
+}
+
+// Save periodically
+setInterval(autoSave, 3000);
+
+init();
+
+// ─── Render loop ───
+window.addEventListener('resize', () => {
+  composer.setSize(innerWidth, innerHeight);
+  resizeTimeline();
+});
+
+function animate(now) {
+  requestAnimationFrame(animate);
+  controls.update();
+
+  if (playing) {
+    const dt = (now - lastFrameTime) / 1000;
+    lastFrameTime = now;
+    currentTime += dt;
+    if (currentTime > totalDuration) currentTime = 0;
+    updateTimeline();
+  }
+
+  // Always apply — keeps mesh positions consistent with step data
+  applyAnimationState();
+
+  // Catalogue mode: tween blend and override positions
+  if (catalogueMode) {
+    const target = 1;
+    catalogueTween += (target - catalogueTween) * 0.08;
+    if (Math.abs(catalogueTween - target) < 0.001) catalogueTween = target;
+    applyCatalogueTween(catalogueTween);
+  } else if (catalogueTween > 0.001) {
+    catalogueTween *= 0.9;
+    if (catalogueTween < 0.001) catalogueTween = 0;
+    applyCatalogueTween(catalogueTween);
+  }
+
+  composer.render();
+  if (labelRenderer && catalogueLabels.length > 0) labelRenderer.render(scene, camera);
+  gnomon.update();
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

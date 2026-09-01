@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/a-sumo/so101-helper/schemas/calibration.schema.json",
+  "title": "SO-101 LeRobot calibration snapshot",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll", "gripper"],
+  "$defs": {
+    "motor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "drive_mode", "homing_offset", "range_min", "range_max"],
+      "properties": {
+        "id": { "type": "integer", "minimum": 1, "maximum": 253 },
+        "drive_mode": { "type": "integer" },
+        "homing_offset": { "type": "integer" },
+        "range_min": { "type": "integer" },
+        "range_max": { "type": "integer" }
+      }
+    }
+  },
+  "properties": {
+    "shoulder_pan": { "$ref": "#/$defs/motor" },
+    "shoulder_lift": { "$ref": "#/$defs/motor" },
+    "elbow_flex": { "$ref": "#/$defs/motor" },
+    "wrist_flex": { "$ref": "#/$defs/motor" },
+    "wrist_roll": { "$ref": "#/$defs/motor" },
+    "gripper": { "$ref": "#/$defs/motor" }
+  }
+}

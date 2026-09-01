@@ -1,0 +1,2149 @@
+{
+  "model": "so101_new_calib",
+  "tutorial_url": "https://huggingface.co/docs/lerobot/so101",
+  "steps": [
+    {
+      "id": "joint_1",
+      "title": "Joint 1 \u2014 Base / Shoulder Pan",
+      "tutorial_section": "Joint 1",
+      "description": "Insert motor 1 into the base, attach motor horns, and fasten with screws.",
+      "links": [
+        "base_link"
+      ],
+      "parts": [
+        {
+          "name": "Base plate",
+          "mesh": "base_so101_v2",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "Base motor holder",
+          "mesh": "base_motor_holder_so101_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "Waveshare mounting plate",
+          "mesh": "waveshare_mounting_plate_so101_v2",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo",
+          "mesh": "sts3215_03a_v1",
+          "material": "servo",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn attachment",
+          "qty": 1,
+          "annotation_names": [
+            "base_horn_f",
+            "base_horn_b"
+          ]
+        }
+      ],
+      "servo_group": null,
+      "motor": {
+        "id": 1,
+        "name": "shoulder_pan",
+        "gear_ratio": "1/191"
+      },
+      "substeps": [
+        "Place the base plate on a flat surface",
+        "Insert motor 1 into the base motor holder",
+        "Attach motor horns to motor 1, secure with M3x6 horn screw",
+        "Fasten the motor holder into the base with the mounting plate"
+      ],
+      "animation": [
+        {
+          "target": "base_so101_v2",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            0.05759
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "sts3215_03a_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0.044774,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "base_motor_holder_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            0.036162
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "base_horn_f",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            -0.05,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "base_horn_b",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0.05,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "waveshare_mounting_plate_so101_v2",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0.043738,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        }
+      ]
+    },
+    {
+      "id": "joint_2",
+      "title": "Joint 2 \u2014 Shoulder Lift",
+      "tutorial_section": "Joint 2",
+      "description": "Slide motor 2 in from the top, fasten with M2x6 screws, attach motor horns, and connect the upper arm.",
+      "links": [
+        "shoulder_link"
+      ],
+      "parts": [
+        {
+          "name": "Rotation pitch",
+          "mesh": "rotation_pitch_so101_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "Motor holder (base)",
+          "mesh": "motor_holder_so101_base_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo",
+          "mesh": "sts3215_03a_v1",
+          "material": "servo",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m2x6",
+          "purpose": "Motor mounting",
+          "qty": 4
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn",
+          "qty": 1
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Upper arm attachment (each side)",
+          "qty": 8,
+          "annotation_group": "servo_base"
+        }
+      ],
+      "servo_group": "servo_base",
+      "motor": {
+        "id": 2,
+        "name": "shoulder_lift",
+        "gear_ratio": "1/345"
+      },
+      "substeps": [
+        "Slide motor 2 in from the top",
+        "Fasten motor 2 with 4\u00d7 M2x6 screws",
+        "Attach both motor horns, secure with M3x6 horn screw",
+        "Attach the upper arm with 4\u00d7 M3x6 screws on each side"
+      ],
+      "animation": [
+        {
+          "target": "rotation_pitch_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            -0.039366,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "servo_base_front_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_front_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_front_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_front_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_back_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_back_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_back_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_base_back_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "sts3215_03a_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            -0.045
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "motor_holder_so101_base_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            -0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        }
+      ]
+    },
+    {
+      "id": "joint_3",
+      "title": "Joint 3 \u2014 Elbow Flex",
+      "tutorial_section": "Joint 3",
+      "description": "Insert motor 3, fasten with M2x6 screws, attach motor horns, and connect the forearm.",
+      "links": [
+        "upper_arm_link"
+      ],
+      "parts": [
+        {
+          "name": "Upper arm",
+          "mesh": "upper_arm_so101_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo",
+          "mesh": "sts3215_03a_v1",
+          "material": "servo",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m2x6",
+          "purpose": "Motor mounting",
+          "qty": 4
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn",
+          "qty": 1
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Forearm attachment (each side)",
+          "qty": 8,
+          "annotation_group": "servo_0"
+        }
+      ],
+      "servo_group": "servo_0",
+      "motor": {
+        "id": 3,
+        "name": "elbow_flex",
+        "gear_ratio": "1/191"
+      },
+      "substeps": [
+        "Insert motor 3 into the upper arm",
+        "Fasten motor 3 with 4\u00d7 M2x6 screws",
+        "Attach both motor horns, secure with M3x6 horn screw",
+        "Connect the forearm with 4\u00d7 M3x6 screws on each side"
+      ],
+      "animation": [
+        {
+          "target": "ua_horn_f1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "ua_horn_f2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "ua_horn_b1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "ua_horn_b2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "upper_arm_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            -0.04,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "sts3215_03a_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            -0.03,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "servo_0_top_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_top_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_top_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_top_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_bottom_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_bottom_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_bottom_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_0_bottom_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.03
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        }
+      ]
+    },
+    {
+      "id": "joint_4",
+      "title": "Joint 4 \u2014 Wrist Flex",
+      "tutorial_section": "Joint 4",
+      "description": "Slide motor holder 4 over, insert motor 4, fasten and attach motor horns.",
+      "links": [
+        "lower_arm_link"
+      ],
+      "parts": [
+        {
+          "name": "Forearm",
+          "mesh": "under_arm_so101_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "Motor holder (wrist)",
+          "mesh": "motor_holder_so101_wrist_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo",
+          "mesh": "sts3215_03a_v1",
+          "material": "servo",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m2x6",
+          "purpose": "Motor mounting",
+          "qty": 4
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn",
+          "qty": 1
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Wrist attachment (each side)",
+          "qty": 8,
+          "annotation_group": "servo_1"
+        }
+      ],
+      "servo_group": "servo_1",
+      "motor": {
+        "id": 4,
+        "name": "wrist_flex",
+        "gear_ratio": "1/147"
+      },
+      "substeps": [
+        "Slide motor holder 4 over the forearm",
+        "Insert motor 4 into the holder",
+        "Fasten motor 4 with 4\u00d7 M2x6 screws",
+        "Attach motor horns, secure with M3x6 horn screw"
+      ],
+      "animation": [
+        {
+          "target": "la_horn_f1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "la_horn_f2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "la_horn_b1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0.001564,
+            0.024381
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "la_horn_b2",
+          "is_screw": true,
+          "approach_offset": [
+            0.006,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "under_arm_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            -0.05,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "servo_1_top_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_top_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_top_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_top_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_bottom_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_bottom_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_bottom_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_1_bottom_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "sts3215_03a_v1",
+          "is_screw": false,
+          "approach_offset": [
+            -0.04,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "motor_holder_so101_wrist_v1",
+          "is_screw": false,
+          "approach_offset": [
+            -0.04,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        }
+      ]
+    },
+    {
+      "id": "joint_5",
+      "title": "Joint 5 \u2014 Wrist Roll",
+      "tutorial_section": "Joint 5",
+      "description": "Insert motor 5 into the wrist holder, secure with front screws, attach motor horn, and connect wrist to motor 4.",
+      "links": [
+        "wrist_link"
+      ],
+      "parts": [
+        {
+          "name": "Wrist roll/pitch",
+          "mesh": "wrist_roll_pitch_so101_v2",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo (no horn)",
+          "mesh": "sts3215_03a_no_horn_v1",
+          "material": "servo",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m2x6",
+          "purpose": "Front motor mounting",
+          "qty": 2
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn",
+          "qty": 1
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Wrist to motor 4 (each side)",
+          "qty": 8,
+          "annotation_group": "servo_2"
+        }
+      ],
+      "servo_group": "servo_2",
+      "motor": {
+        "id": 5,
+        "name": "wrist_roll",
+        "gear_ratio": "1/147"
+      },
+      "substeps": [
+        "Insert motor 5 into the wrist holder",
+        "Secure motor 5 with 2\u00d7 M2x6 front screws",
+        "Install one motor horn, secure with M3x6 horn screw",
+        "Secure the wrist to motor 4 using 4\u00d7 M3x6 screws on both sides"
+      ],
+      "animation": [
+        {
+          "target": "wr_horn_b1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "wr_horn_b2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "wr_horn_f1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.040101
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "wr_horn_f2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "wrist_roll_pitch_so101_v2",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            -0.04,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "servo_2_top_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_top_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_bottom_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_bottom_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_bottom_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_bottom_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.035
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_top_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_2_top_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "sts3215_03a_no_horn_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            0.08
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        }
+      ]
+    },
+    {
+      "id": "gripper",
+      "title": "Gripper",
+      "tutorial_section": "Gripper / Handle",
+      "description": "Attach the gripper to motor 5, insert the gripper motor, attach motor horns, and install the gripper claw.",
+      "links": [
+        "gripper_link",
+        "moving_jaw_so101_v1_link"
+      ],
+      "parts": [
+        {
+          "name": "Wrist roll follower",
+          "mesh": "wrist_roll_follower_so101_v1",
+          "material": "printed",
+          "qty": 1
+        },
+        {
+          "name": "STS3215 servo (gripper)",
+          "mesh": "sts3215_03a_v1",
+          "material": "servo",
+          "qty": 1
+        },
+        {
+          "name": "Moving jaw",
+          "mesh": "moving_jaw_so101_v1",
+          "material": "printed",
+          "qty": 1
+        }
+      ],
+      "fasteners": [
+        {
+          "type": "screw_m3x6",
+          "purpose": "Gripper to motor 5 horn",
+          "qty": 4,
+          "annotation_names": [
+            "grip_horn_1",
+            "grip_horn_2",
+            "grip_horn_3",
+            "grip_horn_4"
+          ]
+        },
+        {
+          "type": "screw_m2x6",
+          "purpose": "Gripper motor mounting (each side)",
+          "qty": 4
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Motor horn",
+          "qty": 1,
+          "annotation_names": [
+            "jaw_horn_1"
+          ]
+        },
+        {
+          "type": "screw_m3x6",
+          "purpose": "Gripper claw (each side)",
+          "qty": 8,
+          "annotation_group": "servo_3"
+        }
+      ],
+      "servo_group": "servo_3",
+      "motor": {
+        "id": 6,
+        "name": "gripper",
+        "gear_ratio": "1/147"
+      },
+      "substeps": [
+        "Attach the gripper to motor 5 via the motor horn with 4\u00d7 M3x6 screws",
+        "Insert the gripper motor, secure with 2\u00d7 M2x6 screws on each side",
+        "Attach motor horns, secure with M3x6 horn screw",
+        "Install the gripper claw with 4\u00d7 M3x6 screws on both sides"
+      ],
+      "animation": [
+        {
+          "target": "wrist_roll_follower_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0,
+            0,
+            -0.06
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            0,
+            1
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "sts3215_03a_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0.04,
+            0.002,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            1,
+            2
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "grip_horn_1",
+          "is_screw": true,
+          "approach_offset": [
+            0.001,
+            -0.04,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "grip_horn_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            -0.04,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "grip_horn_3",
+          "is_screw": true,
+          "approach_offset": [
+            -0.001484,
+            0.030461,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "grip_horn_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0.03,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "jaw_horn_1",
+          "is_screw": true,
+          "approach_offset": [
+            -0.001234,
+            0.000674,
+            -0.02885
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            2,
+            3
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "moving_jaw_so101_v1",
+          "is_screw": false,
+          "approach_offset": [
+            0.025,
+            -0.02,
+            -0.001
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            3,
+            4
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.6
+        },
+        {
+          "target": "servo_3_top_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_top_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_top_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_top_4",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            -0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_bottom_1",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_bottom_2",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "linear",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_bottom_3",
+          "is_screw": true,
+          "approach_offset": [
+            0,
+            0,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        },
+        {
+          "target": "servo_3_bottom_4",
+          "is_screw": true,
+          "approach_offset": [
+            0.001,
+            -0.001,
+            0.04
+          ],
+          "approach_rotation": [
+            0,
+            0,
+            0
+          ],
+          "time": [
+            4,
+            5
+          ],
+          "easing": "ease-in-out",
+          "fade_lead": 0.3,
+          "screw_rotations": 10
+        }
+      ]
+    },
+    {
+      "id": "wiring",
+      "title": "Wiring",
+      "tutorial_section": "Configure the motors",
+      "description": "Connect 3-pin cables between servos in daisy-chain order. Connect motor 1 to the driver board.",
+      "links": [],
+      "parts": [
+        {
+          "name": "3-pin servo cables",
+          "material": "cable",
+          "qty": 5
+        },
+        {
+          "name": "Seeed servo driver board",
+          "material": "pcb",
+          "qty": 1
+        },
+        {
+          "name": "USB cable",
+          "material": "cable",
+          "qty": 1
+        },
+        {
+          "name": "Power supply",
+          "material": "other",
+          "qty": 1
+        }
+      ],
+      "fasteners": [],
+      "servo_group": null,
+      "motor": null,
+      "cable_routing": true,
+      "substeps": [
+        "Connect 3-pin cable from driver board to motor 1 (shoulder_pan)",
+        "Daisy-chain: motor 1 \u2192 motor 2 \u2192 motor 3 \u2192 motor 4 \u2192 motor 5 \u2192 motor 6",
+        "Route cables through cable guides to avoid joint interference",
+        "Connect USB cable from driver board to computer",
+        "Connect power supply to driver board"
+      ]
+    },
+    {
+      "id": "calibrate",
+      "title": "Calibration",
+      "tutorial_section": "Calibrate",
+      "description": "Set motor IDs, configure baudrate, and calibrate joint positions.",
+      "links": [],
+      "parts": [],
+      "fasteners": [],
+      "servo_group": null,
+      "motor": null,
+      "motors_table": [
+        {
+          "id": 1,
+          "name": "shoulder_pan",
+          "limits_rad": [
+            -1.92,
+            1.92
+          ]
+        },
+        {
+          "id": 2,
+          "name": "shoulder_lift",
+          "limits_rad": [
+            -1.75,
+            1.75
+          ]
+        },
+        {
+          "id": 3,
+          "name": "elbow_flex",
+          "limits_rad": [
+            -1.69,
+            1.69
+          ]
+        },
+        {
+          "id": 4,
+          "name": "wrist_flex",
+          "limits_rad": [
+            -1.66,
+            1.66
+          ]
+        },
+        {
+          "id": 5,
+          "name": "wrist_roll",
+          "limits_rad": [
+            -2.74,
+            2.84
+          ]
+        },
+        {
+          "id": 6,
+          "name": "gripper",
+          "limits_rad": [
+            -0.17,
+            1.75
+          ]
+        }
+      ],
+      "substeps": [
+        "Connect each motor individually and run lerobot-setup-motors",
+        "Set unique IDs (1\u20136) and baudrate for each motor",
+        "Reconnect all motors in daisy chain",
+        "Run lerobot-calibrate to set joint zero positions",
+        "Move each joint to verify full range of motion"
+      ]
+    }
+  ],
+  "bom": {
+    "servos": [
+      {
+        "name": "Feetech STS3215",
+        "qty": 6,
+        "notes": "Follower arm uses 1/345 gearing for all. Leader arm uses mixed gearing (see tutorial).",
+        "url": "https://github.com/TheRobotStudio/SO-ARM100"
+      }
+    ],
+    "electronics": [
+      {
+        "name": "Seeed Studio servo driver board (for XIAO)",
+        "qty": 1
+      },
+      {
+        "name": "USB cable (USB-C)",
+        "qty": 1
+      },
+      {
+        "name": "6V power supply",
+        "qty": 1
+      },
+      {
+        "name": "3-pin servo cables",
+        "qty": 5
+      }
+    ],
+    "fasteners": [
+      {
+        "name": "M3\u00d76 machine screws",
+        "qty": 50,
+        "notes": "Motor horn attachment + structural. Pan head Phillips."
+      },
+      {
+        "name": "M2\u00d76 self-tapping screws",
+        "qty": 24,
+        "notes": "Motor mounting into printed parts."
+      }
+    ],
+    "printed_parts": [
+      {
+        "name": "Base plate (base_so101_v2)",
+        "qty": 1
+      },
+      {
+        "name": "Base motor holder (base_motor_holder_so101_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Waveshare mounting plate (waveshare_mounting_plate_so101_v2)",
+        "qty": 1
+      },
+      {
+        "name": "Rotation pitch (rotation_pitch_so101_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Motor holder \u2014 base (motor_holder_so101_base_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Upper arm (upper_arm_so101_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Forearm (under_arm_so101_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Motor holder \u2014 wrist (motor_holder_so101_wrist_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Wrist roll/pitch (wrist_roll_pitch_so101_v2)",
+        "qty": 1
+      },
+      {
+        "name": "Wrist roll follower (wrist_roll_follower_so101_v1)",
+        "qty": 1
+      },
+      {
+        "name": "Moving jaw (moving_jaw_so101_v1)",
+        "qty": 1
+      }
+    ],
+    "source_url": "https://github.com/TheRobotStudio/SO-ARM100",
+    "stl_source": "3D print from STL files in the SO-ARM100 repository"
+  }
+}

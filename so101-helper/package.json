@@ -1,0 +1,25 @@
+{
+  "name": "so101-helper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SO-101 setup, calibration, and assembly tools.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test",
+    "audit:public": "node scripts/check-public.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.1.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "three": "^0.183.2",
+    "urdf-loader": "^0.12.6"
+  }
+}

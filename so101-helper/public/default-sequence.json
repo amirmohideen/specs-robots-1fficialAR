@@ -1,0 +1,1890 @@
+{
+  "schema_version": 3,
+  "model": "so101_new_calib",
+  "duration": 26,
+  "steps": [
+    {
+      "id": "base_link/base_so101_v2",
+      "target": "base_so101_v2",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.05759
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        0,
+        1
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "base"
+    },
+    {
+      "id": "base_link/waveshare_mounting_plate_so101_v2",
+      "target": "waveshare_mounting_plate_so101_v2",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0.043738,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        4,
+        5
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "base"
+    },
+    {
+      "id": "base_link/base_motor_holder_so101_v1",
+      "target": "base_motor_holder_so101_v1",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.036162
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        2,
+        3
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "base"
+    },
+    {
+      "id": "base_link/sts3215_03a_v1",
+      "target": "sts3215_03a_v1",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0.044774,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        1,
+        2
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "base"
+    },
+    {
+      "id": "screw/base_horn_f",
+      "target": "base_horn_f",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0,
+          -0.05,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        3,
+        4
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "base"
+    },
+    {
+      "id": "screw/base_horn_b",
+      "target": "base_horn_b",
+      "link": "base_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0.05,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        3,
+        4
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "base"
+    },
+    {
+      "id": "shoulder_link/rotation_pitch_so101_v1",
+      "target": "rotation_pitch_so101_v1",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          -0.039366,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        5,
+        6
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_front_1",
+      "target": "servo_base_front_1",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_front_2",
+      "target": "servo_base_front_2",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_front_3",
+      "target": "servo_base_front_3",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_front_4",
+      "target": "servo_base_front_4",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_back_1",
+      "target": "servo_base_back_1",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_back_2",
+      "target": "servo_base_back_2",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_back_3",
+      "target": "servo_base_back_3",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "screw/servo_base_back_4",
+      "target": "servo_base_back_4",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        6,
+        7
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "shoulder_link/motor_holder_so101_base_v1",
+      "target": "motor_holder_so101_base_v1",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        8,
+        9
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "shoulder_link/sts3215_03a_v1",
+      "target": "sts3215_03a_v1",
+      "link": "shoulder_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.045
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        7,
+        8
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "shoulder"
+    },
+    {
+      "id": "upper_arm_link/upper_arm_so101_v1",
+      "target": "upper_arm_so101_v1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          -0.04,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        10,
+        11
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/ua_horn_f1",
+      "target": "ua_horn_f1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        9,
+        10
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/ua_horn_f2",
+      "target": "ua_horn_f2",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        9,
+        10
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/ua_horn_b1",
+      "target": "ua_horn_b1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        9,
+        10
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/ua_horn_b2",
+      "target": "ua_horn_b2",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        9,
+        10
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_top_1",
+      "target": "servo_0_top_1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_top_2",
+      "target": "servo_0_top_2",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_top_3",
+      "target": "servo_0_top_3",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_top_4",
+      "target": "servo_0_top_4",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_bottom_1",
+      "target": "servo_0_bottom_1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_bottom_2",
+      "target": "servo_0_bottom_2",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_bottom_3",
+      "target": "servo_0_bottom_3",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/servo_0_bottom_4",
+      "target": "servo_0_bottom_4",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.03
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "elbow"
+    },
+    {
+      "id": "upper_arm_link/sts3215_03a_v1",
+      "target": "sts3215_03a_v1",
+      "link": "upper_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          -0.03,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        11,
+        12
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "elbow"
+    },
+    {
+      "id": "screw/la_horn_f1",
+      "target": "la_horn_f1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        12,
+        13
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/la_horn_f2",
+      "target": "la_horn_f2",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        12,
+        13
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/la_horn_b1",
+      "target": "la_horn_b1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0.001564,
+          0.024381
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        12,
+        13
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/la_horn_b2",
+      "target": "la_horn_b2",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0.006,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        12,
+        13
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "lower_arm_link/under_arm_so101_v1",
+      "target": "under_arm_so101_v1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          -0.05,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        13,
+        14
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_top_2",
+      "target": "servo_1_top_2",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_top_1",
+      "target": "servo_1_top_1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_top_3",
+      "target": "servo_1_top_3",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_top_4",
+      "target": "servo_1_top_4",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_bottom_2",
+      "target": "servo_1_bottom_2",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_bottom_3",
+      "target": "servo_1_bottom_3",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_bottom_4",
+      "target": "servo_1_bottom_4",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_1_bottom_1",
+      "target": "servo_1_bottom_1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        14,
+        15
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "forearm"
+    },
+    {
+      "id": "lower_arm_link/sts3215_03a_v1",
+      "target": "sts3215_03a_v1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          -0.04,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        15,
+        16
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "forearm"
+    },
+    {
+      "id": "lower_arm_link/motor_holder_so101_wrist_v1",
+      "target": "motor_holder_so101_wrist_v1",
+      "link": "lower_arm_link",
+      "start_offset": {
+        "pos": [
+          -0.04,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        16,
+        17
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "forearm"
+    },
+    {
+      "id": "screw/servo_2_top_4",
+      "target": "servo_2_top_4",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "wrist_link/wrist_roll_pitch_so101_v2",
+      "target": "wrist_roll_pitch_so101_v2",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          -0.04,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        18,
+        19
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_top_2",
+      "target": "servo_2_top_2",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "wrist_link/sts3215_03a_no_horn_v1",
+      "target": "sts3215_03a_no_horn_v1",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.08
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        20,
+        21
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/wr_horn_b1",
+      "target": "wr_horn_b1",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        17,
+        18
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/wr_horn_b2",
+      "target": "wr_horn_b2",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        17,
+        18
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/wr_horn_f1",
+      "target": "wr_horn_f1",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.040101
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        17,
+        18
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/wr_horn_f2",
+      "target": "wr_horn_f2",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        17,
+        18
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_bottom_1",
+      "target": "servo_2_bottom_1",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_bottom_2",
+      "target": "servo_2_bottom_2",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_bottom_3",
+      "target": "servo_2_bottom_3",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_bottom_4",
+      "target": "servo_2_bottom_4",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.035
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_top_3",
+      "target": "servo_2_top_3",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "screw/servo_2_top_1",
+      "target": "servo_2_top_1",
+      "link": "wrist_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        19,
+        20
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "wrist"
+    },
+    {
+      "id": "gripper_link/wrist_roll_follower_so101_v1",
+      "target": "wrist_roll_follower_so101_v1",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.06
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        21,
+        22
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "gripper"
+    },
+    {
+      "id": "gripper_link/sts3215_03a_v1",
+      "target": "sts3215_03a_v1",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          0.04,
+          0.002,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        22,
+        23
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/grip_horn_1",
+      "target": "grip_horn_1",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          0.001,
+          -0.04,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        23,
+        24
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/grip_horn_2",
+      "target": "grip_horn_2",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          0,
+          -0.04,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        23,
+        24
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/grip_horn_3",
+      "target": "grip_horn_3",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          -0.001484,
+          0.030461,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        23,
+        24
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/grip_horn_4",
+      "target": "grip_horn_4",
+      "link": "gripper_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0.03,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        23,
+        24
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "moving_jaw_so101_v1_link/moving_jaw_so101_v1",
+      "target": "moving_jaw_so101_v1",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0.025,
+          -0.02,
+          -0.001
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        24,
+        25
+      ],
+      "easing": "ease-in-out",
+      "fade_lead": 0.6,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/jaw_horn_1",
+      "target": "jaw_horn_1",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          -0.001234,
+          0.000674,
+          -0.02885
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        23,
+        24
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_top_1",
+      "target": "servo_3_top_1",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_top_2",
+      "target": "servo_3_top_2",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_top_3",
+      "target": "servo_3_top_3",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_top_4",
+      "target": "servo_3_top_4",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          -0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_bottom_1",
+      "target": "servo_3_bottom_1",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_bottom_2",
+      "target": "servo_3_bottom_2",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "linear",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_bottom_3",
+      "target": "servo_3_bottom_3",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0,
+          0,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    },
+    {
+      "id": "screw/servo_3_bottom_4",
+      "target": "servo_3_bottom_4",
+      "link": "moving_jaw_so101_v1_link",
+      "start_offset": {
+        "pos": [
+          0.001,
+          -0.001,
+          0.04
+        ],
+        "rot": [
+          0,
+          0,
+          0
+        ]
+      },
+      "time": [
+        25,
+        26
+      ],
+      "easing": "ease-in-out",
+      "screw_rotations": 10,
+      "fade_lead": 0.3,
+      "chapter": "gripper"
+    }
+  ]
+}

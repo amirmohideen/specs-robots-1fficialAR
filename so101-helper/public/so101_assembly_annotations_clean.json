@@ -1,0 +1,1048 @@
+{
+  "model": "so101_new_calib",
+  "units": "meters (link-local)",
+  "hover_mm": 15,
+  "cable_guides": [],
+  "screws": [
+    {
+      "name": "servo_0_top_1",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.004982,
+        0.004702,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "top"
+    },
+    {
+      "name": "servo_0_top_2",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        -0.004846,
+        0.004702,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "top"
+    },
+    {
+      "name": "servo_0_top_3",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.004982,
+        -0.005125,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "top"
+    },
+    {
+      "name": "servo_0_top_4",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        -0.004846,
+        -0.005125,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "top"
+    },
+    {
+      "name": "servo_0_bottom_1",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.004982,
+        0.004703,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_0_bottom_2",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        -0.004846,
+        0.004703,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_0_bottom_3",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.004982,
+        -0.005124,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_0_bottom_4",
+      "type": "screw_m3x6",
+      "link": "upper_arm_link",
+      "local_pos": [
+        -0.004846,
+        -0.005124,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_0",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_1_top_1",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.005161,
+        -0.003946,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "top"
+    },
+    {
+      "name": "servo_1_top_2",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.005161,
+        0.005458,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "top"
+    },
+    {
+      "name": "servo_1_top_3",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        -0.004576,
+        -0.003946,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "top"
+    },
+    {
+      "name": "servo_1_top_4",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        -0.004576,
+        0.005458,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "top"
+    },
+    {
+      "name": "servo_1_bottom_1",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.005161,
+        -0.003946,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_1_bottom_2",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.005161,
+        0.005458,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_1_bottom_3",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        -0.004576,
+        -0.003946,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_1_bottom_4",
+      "type": "screw_m3x6",
+      "link": "lower_arm_link",
+      "local_pos": [
+        -0.004576,
+        0.005458,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_1",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_2_top_1",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        0.00485,
+        0.005301,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "top"
+    },
+    {
+      "name": "servo_2_top_2",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.005124,
+        0.005301,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "top"
+    },
+    {
+      "name": "servo_2_top_3",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        0.00485,
+        -0.004488,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "top"
+    },
+    {
+      "name": "servo_2_top_4",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.005124,
+        -0.004488,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "top"
+    },
+    {
+      "name": "servo_2_bottom_1",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        0.00485,
+        0.005301,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_2_bottom_2",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.005124,
+        0.005301,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_2_bottom_3",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        0.00485,
+        -0.004488,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_2_bottom_4",
+      "type": "screw_m3x6",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.005124,
+        -0.004488,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8,
+      "servo_group": "servo_2",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_3_top_1",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        0.004287,
+        0.005649,
+        -0.00002
+      ],
+      "normal": [
+        -0.042712,
+        0.023318,
+        -0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "top"
+    },
+    {
+      "name": "servo_3_top_2",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        0.005333,
+        -0.004653,
+        -0.000305
+      ],
+      "normal": [
+        -0.042712,
+        0.023318,
+        -0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "top"
+    },
+    {
+      "name": "servo_3_top_3",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        -0.004434,
+        0.004954,
+        0.000336
+      ],
+      "normal": [
+        -0.042712,
+        0.023318,
+        -0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "top"
+    },
+    {
+      "name": "servo_3_top_4",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        -0.004806,
+        -0.004721,
+        0.000126
+      ],
+      "normal": [
+        -0.042712,
+        0.023318,
+        -0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "top"
+    },
+    {
+      "name": "servo_3_bottom_1",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        0.005178,
+        0.005029,
+        0.037327
+      ],
+      "normal": [
+        0.042712,
+        -0.023318,
+        0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_3_bottom_2",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        0.004731,
+        -0.005091,
+        0.03711
+      ],
+      "normal": [
+        0.042712,
+        -0.023318,
+        0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_3_bottom_3",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        -0.004982,
+        0.005101,
+        0.037763
+      ],
+      "normal": [
+        0.042712,
+        -0.023318,
+        0.998815
+      ],
+      "depth_mm": -2.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_3_bottom_4",
+      "type": "screw_m3x6",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        -0.005075,
+        -0.004985,
+        0.037531
+      ],
+      "normal": [
+        0.042712,
+        -0.023318,
+        0.998815
+      ],
+      "depth_mm": -4.5,
+      "group_roll_deg": -119,
+      "servo_group": "servo_3",
+      "side": "bottom"
+    },
+    {
+      "name": "servo_base_front_1",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        -0.004995,
+        -0.005105,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "front"
+    },
+    {
+      "name": "servo_base_front_2",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        0.005093,
+        0.004896,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "front"
+    },
+    {
+      "name": "servo_base_front_3",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        0.005093,
+        -0.005105,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "front"
+    },
+    {
+      "name": "servo_base_front_4",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        -0.004995,
+        0.004896,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "front"
+    },
+    {
+      "name": "servo_base_back_1",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        -0.004995,
+        0.004896,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "back"
+    },
+    {
+      "name": "servo_base_back_2",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        -0.004995,
+        -0.005105,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "back"
+    },
+    {
+      "name": "servo_base_back_3",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        0.005093,
+        0.004896,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "back"
+    },
+    {
+      "name": "servo_base_back_4",
+      "type": "screw_m3x6",
+      "link": "shoulder_link",
+      "local_pos": [
+        0.005093,
+        -0.005105,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -7.5,
+      "group_roll_deg": 180,
+      "servo_group": "servo_base",
+      "side": "back"
+    },
+    {
+      "name": "ua_horn_f1",
+      "type": "screw_m2x8",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.029205,
+        0.010521,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -7
+    },
+    {
+      "name": "ua_horn_f2",
+      "type": "screw_m2x8",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.029481,
+        -0.010803,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -8
+    },
+    {
+      "name": "base_horn_f",
+      "type": "screw_m2x8",
+      "link": "base_link",
+      "local_pos": [
+        -0.010935,
+        -0.01735,
+        0.045776
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ],
+      "depth_mm": -3
+    },
+    {
+      "name": "la_horn_f1",
+      "type": "screw_m2x8",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.029338,
+        -0.010333,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -4
+    },
+    {
+      "name": "la_horn_f2",
+      "type": "screw_m2x8",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.029155,
+        0.010541,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -4.5
+    },
+    {
+      "name": "wr_horn_f1",
+      "type": "screw_m2x8",
+      "link": "wrist_link",
+      "local_pos": [
+        0.010214,
+        0.029,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -4.5
+    },
+    {
+      "name": "wr_horn_f2",
+      "type": "screw_m2x8",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.010617,
+        0.029104,
+        0.0043
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "depth_mm": -4
+    },
+    {
+      "name": "grip_horn_1",
+      "type": "screw_m2x8",
+      "link": "gripper_link",
+      "local_pos": [
+        -0.012718,
+        -0.014313,
+        -0.013137
+      ],
+      "normal": [
+        0.048663,
+        -0.998815,
+        0
+      ],
+      "depth_mm": -9
+    },
+    {
+      "name": "grip_horn_2",
+      "type": "screw_m2x8",
+      "link": "gripper_link",
+      "local_pos": [
+        -0.013017,
+        -0.014321,
+        -0.033577
+      ],
+      "normal": [
+        0.048663,
+        -0.998815,
+        0
+      ],
+      "depth_mm": -5
+    },
+    {
+      "name": "ua_horn_b1",
+      "type": "screw_m2x8",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.031882,
+        0.010521,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -7
+    },
+    {
+      "name": "ua_horn_b2",
+      "type": "screw_m2x8",
+      "link": "upper_arm_link",
+      "local_pos": [
+        0.032756,
+        -0.010803,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -8
+    },
+    {
+      "name": "base_horn_b",
+      "type": "screw_m2x8",
+      "link": "base_link",
+      "local_pos": [
+        -0.010935,
+        0.01735,
+        0.045667
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "depth_mm": -3
+    },
+    {
+      "name": "la_horn_b1",
+      "type": "screw_m2x8",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.032831,
+        -0.010333,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -4
+    },
+    {
+      "name": "la_horn_b2",
+      "type": "screw_m2x8",
+      "link": "lower_arm_link",
+      "local_pos": [
+        0.029095,
+        0.010837,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "wr_horn_b1",
+      "type": "screw_m2x8",
+      "link": "wrist_link",
+      "local_pos": [
+        0.010397,
+        0.032995,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -4.5
+    },
+    {
+      "name": "wr_horn_b2",
+      "type": "screw_m2x8",
+      "link": "wrist_link",
+      "local_pos": [
+        -0.010297,
+        0.032709,
+        0.0331
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "depth_mm": -4
+    },
+    {
+      "name": "grip_horn_3",
+      "type": "screw_m2x8",
+      "link": "gripper_link",
+      "local_pos": [
+        -0.008739,
+        0.014524,
+        -0.013011
+      ],
+      "normal": [
+        -0.048663,
+        0.998815,
+        -0.00001
+      ],
+      "depth_mm": -5
+    },
+    {
+      "name": "jaw_horn_1",
+      "type": "screw_m2x8",
+      "link": "moving_jaw_so101_v1_link",
+      "local_pos": [
+        -0.030123,
+        0.004648,
+        0.004277
+      ],
+      "normal": [
+        -0.042712,
+        0.023318,
+        -0.998815
+      ],
+      "depth_mm": -4.5
+    },
+    {
+      "name": "grip_horn_4",
+      "type": "screw_m2x8",
+      "link": "gripper_link",
+      "local_pos": [
+        -0.013017,
+        0.014321,
+        -0.034014
+      ],
+      "normal": [
+        -0.048663,
+        0.998815,
+        0
+      ],
+      "depth_mm": -5,
+      "locked": true
+    }
+  ]
+}
