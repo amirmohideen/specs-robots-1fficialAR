@@ -41,6 +41,7 @@ rewrite — these are the upstream projects, mirrored.
 | [spectacles-dimensional-os](#spectacles-dimensional-os) | Unitree Go2 + G1 | Navigation + LiDAR visualization | [V4C38](https://github.com/V4C38) |
 | [VectAR-Airhokey](#vectar-airhokey) | Anki Vector | AR air hockey vs. a real robot | [PtPavloTkachenko](https://github.com/PtPavloTkachenko) |
 | [so101-helper](#so101-helper) | Hugging Face SO-101 arm | Assembly, calibration & on-LAN control | [a-sumo](https://github.com/a-sumo) |
+| [specs-microduck](#specs-microduck) | Pollen Robotics Micro Duck | Hand-gesture teleoperation | [kgediya](https://github.com/kgediya) |
 
 ---
 
@@ -178,6 +179,32 @@ port forwarding or a cloud relay.
 
 ---
 
+### specs-microduck
+
+📁 [`specs-microduck/`](./specs-microduck) &nbsp;•&nbsp; 🔗 Upstream: [kgediya/specs-microduck](https://github.com/kgediya/specs-microduck)
+
+Teleoperate a [**Pollen Robotics Micro Duck**](https://huggingface.co/spaces/pollen-robotics/microduck-simulator)
+biped with your **bare hands**. Tilt your palm to drive, roll your wrist to steer, and fire
+off pinch gestures — index to quack and open the beak, middle for a soccer kick, ring for a
+360° roll-recovery, and a double-pinch to switch between walking legs and skating rollers.
+
+Under the playful surface it's a careful bit of hand-tracking engineering: knuckle-anchored
+orientation vectors to kill pinch jitter, Schmitt-trigger hysteresis and adaptive low-pass
+smoothing on the input, and acceleration-ramp limiting feeding a **MuJoCo** reinforcement-
+learning locomotion policy. An in-lens HUD shows speed, turn rate, live pitch/roll, ping
+latency, and a palm-attached steering compass; gesture packets stream over a **WebSocket**
+relay at 30–50 Hz.
+
+**What's inside**
+- `Micro Duck Proto/` — the Lens Studio project (`Micro Duck Proto.esproj`), TypeScript + Spectacles Interaction Kit hand tracking
+- `bridge.py` — a zero-dependency (stdlib-only) Python WebSocket relay between the Spectacles and the simulator
+- `simulator-integration/` — `setup_simulator.py` clones Pollen's [Micro Duck simulator](https://huggingface.co/spaces/pollen-robotics/microduck-simulator) and injects the Spectacles controller source (`spectacles.js`)
+- `simulate_gestures.py` — replays synthetic gestures so you can drive the sim without the glasses
+
+> No glasses handy? Run `bridge.py` alongside `simulate_gestures.py` against the simulator to exercise the full control path from your keyboard.
+
+---
+
 ## Getting Started
 
 **These projects use [Git LFS](https://git-lfs.com/)** for 3D assets, textures, meshes, demo
@@ -243,6 +270,12 @@ derived from [Unitree's `avp_teleoperate`](https://github.com/unitreerobotics/av
 released under Apache 2.0. See the project's [`LICENSE`](./so101-helper/LICENSE) and
 [`NOTICE`](./so101-helper/NOTICE).
 
+**specs-microduck** — © 2026 **Krunal Gediya**
+([**@kgediya**](https://github.com/kgediya)). The Micro Duck simulator is by
+[Pollen Robotics](https://www.pollen-robotics.com/), hosted on
+[Hugging Face Spaces](https://huggingface.co/spaces/pollen-robotics/microduck-simulator);
+physics by [MuJoCo](https://github.com/google-deepmind/mujoco).
+
 Robot platforms referenced here are products of
 [Unitree Robotics](https://www.unitree.com/),
 [Pollen Robotics](https://www.pollen-robotics.com/),
@@ -261,6 +294,7 @@ folder keeps its own `LICENSE` file with the original copyright notice intact:
 | [spectacles-dimensional-os](./spectacles-dimensional-os/LICENSE) | MIT |
 | [VectAR-Airhokey](./VectAR-Airhokey/LICENSE) | MIT |
 | [so101-helper](./so101-helper/LICENSE) | Apache 2.0 |
+| [specs-microduck](./specs-microduck/LICENSE) | MIT |
 
 Third-party components retain their own licenses (Apache 2.0, BSD, LGPL v3, and others) as
 documented within each project.
