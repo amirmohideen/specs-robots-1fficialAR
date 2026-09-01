@@ -40,6 +40,7 @@ rewrite — these are the upstream projects, mirrored.
 | [spectacles-reachy-mini](#spectacles-reachy-mini) | Reachy Mini | Puppeteering + LLM assistant | [V4C38](https://github.com/V4C38) |
 | [spectacles-dimensional-os](#spectacles-dimensional-os) | Unitree Go2 + G1 | Navigation + LiDAR visualization | [V4C38](https://github.com/V4C38) |
 | [VectAR-Airhokey](#vectar-airhokey) | Anki Vector | AR air hockey vs. a real robot | [PtPavloTkachenko](https://github.com/PtPavloTkachenko) |
+| [so101-helper](#so101-helper) | Hugging Face SO-101 arm | Assembly, calibration & on-LAN control | [a-sumo](https://github.com/a-sumo) |
 
 ---
 
@@ -148,6 +149,35 @@ simulated goalie, so you can work on the game without the robot present.
 
 ---
 
+### so101-helper
+
+📁 [`so101-helper/`](./so101-helper) &nbsp;•&nbsp; 🔗 Upstream: [a-sumo/so101-helper](https://github.com/a-sumo/so101-helper) &nbsp;•&nbsp; 🕶️ Lens: [**SO-101 Toolbox**](https://www.spectacles.com/lens/f3862663be534dcaa8518858c9a2bbe1?type=SNAPCODE&metadata=01) &nbsp;•&nbsp; 💬 [r/Spectacles thread](https://www.reddit.com/r/Spectacles/comments/1w46n77/comment/p7689nn/)
+
+The companion repository for **SO-101 Toolbox** — a Lens that helps you **assemble,
+inspect, and operate** the [Hugging Face **SO-101**](https://github.com/huggingface/lerobot)
+robotic arm from Spectacles. Where the other projects here stream a robot's state into AR,
+this one walks the whole path from a box of parts to a moving arm: a guided 3D assembly
+sequence, a calibration flow, and live control of the real hardware.
+
+The design choice worth noting is where the control loop runs. Commands and telemetry never
+leave your LAN — they travel directly between the Spectacles and a bridge on the computer
+that's physically wired to the arm. A hosted endpoint is used only for DNS and a one-time
+pairing handshake; it never sees a command, a joint angle, or the locally generated TLS
+key. That's what makes a physical robot on a home network reachable from a Lens without
+port forwarding or a cloud relay.
+
+**What's inside**
+- `so101_bridge.py` — USB bridge to the SO-101 servos
+- `bridge/` — the trusted local WSS helper and one-time pairing (`local_wss_helper.py`), plus the arm's kinematics (`so101_kinematics.urdf`)
+- `assembly.html` · `calibration.html` · `index.html` + `src/` — Vite web tools (three.js + `urdf-loader`) for the guided assembly animation and calibration
+- `public/` — assembly meshes (`.glb`), URDFs, and annotated step sequences
+- `docs/` — assembly, calibration, and real-arm setup guides
+
+> This folder is the helper/walkthrough, not a Lens Studio project — the SO-101 Toolbox Lens
+> itself is installed from the [Lens link](https://www.spectacles.com/lens/f3862663be534dcaa8518858c9a2bbe1?type=SNAPCODE&metadata=01) above.
+
+---
+
 ## Getting Started
 
 **These projects use [Git LFS](https://git-lfs.com/)** for 3D assets, textures, meshes, demo
@@ -209,15 +239,20 @@ derived from [Unitree's `avp_teleoperate`](https://github.com/unitreerobotics/av
 `anki_vector` SDK (Apache 2.0). See the project's
 [`THIRD_PARTY_NOTICES.md`](./VectAR-Airhokey/THIRD_PARTY_NOTICES.md) for the full list.
 
+**so101-helper** — © 2026 **Armand Sumo** ([**@a-sumo**](https://github.com/a-sumo)),
+released under Apache 2.0. See the project's [`LICENSE`](./so101-helper/LICENSE) and
+[`NOTICE`](./so101-helper/NOTICE).
+
 Robot platforms referenced here are products of
 [Unitree Robotics](https://www.unitree.com/),
-[Pollen Robotics](https://www.pollen-robotics.com/), and Anki / Digital Dream Labs, and are
+[Pollen Robotics](https://www.pollen-robotics.com/),
+[Hugging Face](https://huggingface.co/), and Anki / Digital Dream Labs, and are
 trademarks of their respective owners.
 
 ## Licenses
 
-Every project in this repo is **MIT licensed**, and each folder keeps its own `LICENSE`
-file with the original copyright notice intact:
+Most projects in this repo are **MIT licensed**; **so101-helper** is **Apache 2.0**. Each
+folder keeps its own `LICENSE` file with the original copyright notice intact:
 
 | Project | License |
 |---|---|
@@ -225,6 +260,7 @@ file with the original copyright notice intact:
 | [spectacles-reachy-mini](./spectacles-reachy-mini/LICENSE) | MIT |
 | [spectacles-dimensional-os](./spectacles-dimensional-os/LICENSE) | MIT |
 | [VectAR-Airhokey](./VectAR-Airhokey/LICENSE) | MIT |
+| [so101-helper](./so101-helper/LICENSE) | Apache 2.0 |
 
 Third-party components retain their own licenses (Apache 2.0, BSD, LGPL v3, and others) as
 documented within each project.
